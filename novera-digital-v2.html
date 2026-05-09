@@ -1,0 +1,3027 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Novera Digital — IA Personalizada para Sua Empresa</title>
+    <meta name="description" content="Entendemos sua dor, mapeamos seus processos e criamos sistemas de IA customizados setor por setor, unificados em uma plataforma própria.">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --black: #0a0a0a;
+            --dark-bg: #111111;
+            --graphite: #1a1a1a;
+            --border: #222222;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a0a0;
+            --text-muted: #707070;
+            --electric-blue: #3b82f6;
+            --neon-purple: #a855f7;
+            --success: #10b981;
+            --accent-glow: rgba(59, 130, 246, 0.15);
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--black);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* Particle Canvas */
+        #particle-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 1.5rem 3rem;
+            background: rgba(10, 10, 10, 0.7);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        nav.scrolled {
+            background: rgba(10, 10, 10, 0.95);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            background: linear-gradient(135deg, #ffffff 0%, #a0a0a0 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--text-primary);
+        }
+
+        .cta-nav {
+            padding: 0.7rem 1.5rem;
+            background: linear-gradient(135deg, var(--electric-blue), var(--neon-purple));
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(59, 130, 246, 0.3);
+        }
+
+        .cta-nav:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(59, 130, 246, 0.5);
+        }
+
+        /* Hero Section */
+        .hero {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            background: radial-gradient(ellipse at center, rgba(59, 130, 246, 0.05) 0%, transparent 70%);
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            max-width: 1100px;
+            padding: 2rem;
+            margin-top: -3rem;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            padding: 0.5rem 1.2rem;
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--electric-blue);
+            margin-bottom: 2rem;
+            backdrop-filter: blur(10px);
+            opacity: 0;
+            animation: fadeInUp 0.8s ease forwards 0.2s;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.8rem, 7vw, 6rem);
+            font-weight: 900;
+            line-height: 1.1;
+            letter-spacing: -0.04em;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, #ffffff 0%, #a0a0a0 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease forwards 0.4s;
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, var(--electric-blue), var(--neon-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero p {
+            font-size: clamp(1.15rem, 2vw, 1.35rem);
+            color: var(--text-secondary);
+            max-width: 750px;
+            margin: 0 auto 3rem;
+            line-height: 1.7;
+            font-weight: 400;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease forwards 0.6s;
+        }
+
+        .hero-cta {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease forwards 0.8s;
+        }
+
+        .btn-primary {
+            padding: 1.1rem 2.8rem;
+            background: linear-gradient(135deg, var(--electric-blue), var(--neon-purple));
+            border: none;
+            border-radius: 10px;
+            color: white;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 30px rgba(59, 130, 246, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .btn-primary:hover::before {
+            left: 100%;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 40px rgba(59, 130, 246, 0.6);
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+        }
+
+        /* Section Base */
+        section {
+            position: relative;
+            z-index: 10;
+            padding: 8rem 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 5rem;
+        }
+
+        .section-badge {
+            display: inline-block;
+            padding: 0.5rem 1.2rem;
+            background: rgba(168, 85, 247, 0.1);
+            border: 1px solid rgba(168, 85, 247, 0.2);
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--neon-purple);
+            margin-bottom: 1.5rem;
+        }
+
+        .section-title {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            line-height: 1.2;
+            margin-bottom: 1.5rem;
+        }
+
+        .section-description {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            max-width: 750px;
+            margin: 0 auto;
+            line-height: 1.8;
+        }
+
+        /* Understanding Section */
+        .understanding-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+            margin-top: 5rem;
+        }
+
+        .understanding-visual {
+            padding: 4rem;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 30px;
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .understanding-visual::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 30% 30%, rgba(59, 130, 246, 0.1), transparent 60%);
+        }
+
+        .understanding-steps {
+            position: relative;
+            z-index: 2;
+        }
+
+        .understanding-step {
+            margin-bottom: 3rem;
+            padding-left: 4rem;
+            position: relative;
+        }
+
+        .step-icon {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--electric-blue), var(--neon-purple));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            box-shadow: 0 8px 24px rgba(59, 130, 246, 0.3);
+        }
+
+        .understanding-step h4 {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 0.8rem;
+            color: var(--text-primary);
+        }
+
+        .understanding-step p {
+            color: var(--text-secondary);
+            line-height: 1.7;
+            font-size: 1rem;
+        }
+
+        .understanding-content h3 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 2rem;
+            line-height: 1.3;
+        }
+
+        .understanding-content p {
+            font-size: 1.15rem;
+            color: var(--text-secondary);
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+        }
+
+        /* Sector Mapping */
+        .sector-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2.5rem;
+            margin-top: 4rem;
+        }
+
+        .sector-card {
+            padding: 3rem;
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.02), rgba(168, 85, 247, 0.02));
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 24px;
+            backdrop-filter: blur(10px);
+            transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .sector-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at top left, var(--accent-glow), transparent 60%);
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .sector-card:hover::before {
+            opacity: 1;
+        }
+
+        .sector-card:hover {
+            transform: translateY(-12px) scale(1.02);
+            border-color: rgba(59, 130, 246, 0.3);
+            box-shadow: 0 30px 80px rgba(59, 130, 246, 0.25);
+        }
+
+        .sector-header {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .sector-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--electric-blue), var(--neon-purple));
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            box-shadow: 0 10px 30px rgba(59, 130, 246, 0.3);
+            flex-shrink: 0;
+        }
+
+        .sector-card h3 {
+            font-size: 1.6rem;
+            font-weight: 700;
+            position: relative;
+            z-index: 2;
+        }
+
+        .sector-problems {
+            list-style: none;
+            margin: 1.5rem 0;
+            position: relative;
+            z-index: 2;
+        }
+
+        .sector-problems li {
+            padding: 0.8rem 0;
+            color: #ef4444;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.8rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+        }
+
+        .sector-problems li::before {
+            content: '✗';
+            color: #ef4444;
+            font-weight: 700;
+            font-size: 1rem;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .sector-solutions {
+            list-style: none;
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            position: relative;
+            z-index: 2;
+        }
+
+        .sector-solutions li {
+            padding: 0.7rem 0;
+            color: var(--success);
+            font-size: 0.95rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.8rem;
+        }
+
+        .sector-solutions li::before {
+            content: '✓';
+            color: var(--success);
+            font-weight: 700;
+            font-size: 1.1rem;
+            flex-shrink: 0;
+        }
+
+        .sector-label {
+            display: inline-block;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 1rem;
+            color: var(--text-muted);
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Process Flow */
+        .process-flow {
+            margin-top: 5rem;
+            padding: 4rem;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 30px;
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .process-flow::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--electric-blue), transparent);
+        }
+
+        .process-steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+            margin-top: 3rem;
+        }
+
+        .process-step {
+            text-align: center;
+            position: relative;
+        }
+
+        .process-step::after {
+            content: '→';
+            position: absolute;
+            top: 25px;
+            right: -1.5rem;
+            font-size: 2rem;
+            color: var(--electric-blue);
+            opacity: 0.3;
+        }
+
+        .process-step:last-child::after {
+            display: none;
+        }
+
+        .process-number {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--electric-blue), var(--neon-purple));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 800;
+            margin: 0 auto 1.5rem;
+            box-shadow: 0 10px 30px rgba(59, 130, 246, 0.4);
+        }
+
+        .process-step h4 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 0.8rem;
+        }
+
+        .process-step p {
+            color: var(--text-secondary);
+            line-height: 1.6;
+            font-size: 0.95rem;
+        }
+
+        /* Unified Platform */
+        .platform-container {
+            margin-top: 5rem;
+            text-align: center;
+        }
+
+        .platform-visual {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 5rem 3rem;
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.05), rgba(168, 85, 247, 0.05));
+            border: 2px solid rgba(59, 130, 246, 0.2);
+            border-radius: 30px;
+            backdrop-filter: blur(20px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .platform-visual::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, var(--accent-glow), transparent 50%);
+            animation: rotate 20s linear infinite;
+        }
+
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .platform-layers {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .platform-layer {
+            padding: 2rem;
+            background: rgba(10, 10, 10, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .platform-layer:hover {
+            transform: translateX(10px);
+            border-color: rgba(59, 130, 246, 0.3);
+        }
+
+        .platform-layer h4 {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        .platform-layer-icon {
+            font-size: 1.8rem;
+        }
+
+        .platform-modules {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 1rem;
+        }
+
+        .platform-module {
+            padding: 0.6rem 1.2rem;
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--electric-blue);
+        }
+
+        /* CTA Section */
+        .final-cta {
+            text-align: center;
+            padding: 8rem 2rem;
+            background: radial-gradient(ellipse at center, rgba(59, 130, 246, 0.1) 0%, transparent 70%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .final-cta::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--electric-blue), transparent);
+        }
+
+        .final-cta h2 {
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            font-weight: 900;
+            margin-bottom: 2rem;
+            line-height: 1.2;
+        }
+
+        .final-cta p {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            max-width: 700px;
+            margin: 0 auto 3rem;
+            line-height: 1.8;
+        }
+
+        .cta-features {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            margin: 3rem 0;
+            flex-wrap: wrap;
+        }
+
+        .cta-feature {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        .cta-feature::before {
+            content: '✓';
+            color: var(--success);
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+
+        /* Footer */
+        footer {
+            padding: 4rem 2rem 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            position: relative;
+            z-index: 10;
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 4rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-brand h3 {
+            font-size: 1.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+        }
+
+        .footer-brand p {
+            color: var(--text-secondary);
+            line-height: 1.7;
+            max-width: 320px;
+        }
+
+        .footer-links h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: var(--text-primary);
+        }
+
+        .footer-links ul {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.8rem;
+        }
+
+        .footer-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.3s ease;
+            font-size: 0.95rem;
+        }
+
+        .footer-links a:hover {
+            color: var(--electric-blue);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .nav-links {
+                display: none;
+            }
+
+            .understanding-container {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr 1fr;
+                gap: 2rem;
+            }
+
+            .process-step::after {
+                display: none;
+            }
+        }
+
+        @media (max-width: 640px) {
+            nav {
+                padding: 1rem 1.5rem;
+            }
+
+            section {
+                padding: 4rem 1.5rem;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+            }
+
+            .understanding-visual,
+            .process-flow,
+            .platform-visual {
+                padding: 2rem 1.5rem;
+            }
+
+            .cta-features {
+                flex-direction: column;
+                align-items: center;
+                gap: 1rem;
+            }
+        }
+
+        /* Dashboard Preview */
+        .dashboard-preview {
+            margin-top: 4rem;
+        }
+
+        .dashboard-screen {
+            background: rgba(10, 10, 10, 0.95);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            padding: 2rem;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 30px 90px rgba(0, 0, 0, 0.5);
+        }
+
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 2rem;
+            margin-bottom: 2rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .dashboard-logo {
+            font-size: 1.3rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--electric-blue), var(--neon-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .dashboard-user {
+            display: flex;
+            align-items: center;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .dashboard-card {
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .dashboard-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(59, 130, 246, 0.3);
+            box-shadow: 0 10px 40px rgba(59, 130, 246, 0.2);
+        }
+
+        .dashboard-card-wide {
+            grid-column: span 2;
+        }
+
+        .dashboard-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .dashboard-status {
+            color: var(--success);
+            font-size: 1.2rem;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .dashboard-metric {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--electric-blue), var(--neon-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+        }
+
+        .dashboard-change {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .dashboard-change.positive {
+            color: var(--success);
+        }
+
+        .dashboard-mini-chart {
+            margin-top: 1rem;
+            height: 40px;
+            background: linear-gradient(to right, 
+                transparent 0%, 
+                rgba(59, 130, 246, 0.1) 20%, 
+                rgba(59, 130, 246, 0.2) 40%, 
+                rgba(59, 130, 246, 0.3) 60%, 
+                rgba(59, 130, 246, 0.2) 80%, 
+                transparent 100%
+            );
+            border-radius: 4px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .dashboard-mini-chart::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.4), transparent);
+            animation: shimmer 3s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        .sector-status-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .sector-status-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .sector-status-icon {
+            width: 45px;
+            height: 45px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            flex-shrink: 0;
+        }
+
+        .dashboard-benefits {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .dashboard-benefit {
+            text-align: center;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .dashboard-benefit:hover {
+            transform: translateY(-8px);
+            border-color: rgba(59, 130, 246, 0.2);
+        }
+
+        .dashboard-benefit-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .dashboard-benefit h4 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 0.8rem;
+        }
+
+        .dashboard-benefit p {
+            color: var(--text-secondary);
+            line-height: 1.6;
+            font-size: 0.95rem;
+        }
+
+        /* WhatsApp Floating Button */
+        .whatsapp-float {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 999;
+            animation: floatIn 0.8s ease forwards;
+        }
+
+        @keyframes floatIn {
+            from {
+                opacity: 0;
+                transform: translateY(100px) scale(0);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .whatsapp-button {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, #25D366, #128C7E);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 30px rgba(37, 211, 102, 0.4);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            position: relative;
+        }
+
+        .whatsapp-button::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #25D366, #128C7E);
+            animation: ping 2s cubic-bezier(0, 0, 0.2, 1) infinite;
+            opacity: 0.75;
+        }
+
+        @keyframes ping {
+            75%, 100% {
+                transform: scale(1.5);
+                opacity: 0;
+            }
+        }
+
+        .whatsapp-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 12px 40px rgba(37, 211, 102, 0.6);
+        }
+
+        .whatsapp-icon {
+            width: 40px;
+            height: 40px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .whatsapp-tooltip {
+            position: absolute;
+            right: 85px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: white;
+            color: #000;
+            padding: 0.8rem 1.2rem;
+            border-radius: 12px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            white-space: nowrap;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.3s ease;
+        }
+
+        .whatsapp-tooltip::after {
+            content: '';
+            position: absolute;
+            right: -8px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 0;
+            height: 0;
+            border-left: 8px solid white;
+            border-top: 8px solid transparent;
+            border-bottom: 8px solid transparent;
+        }
+
+        .whatsapp-float:hover .whatsapp-tooltip {
+            opacity: 1;
+        }
+
+        @media (max-width: 768px) {
+            .whatsapp-tooltip {
+                display: none;
+            }
+
+            .whatsapp-float {
+                bottom: 20px;
+                right: 20px;
+            }
+
+            .whatsapp-button {
+                width: 60px;
+                height: 60px;
+            }
+
+            .whatsapp-icon {
+                width: 35px;
+                height: 35px;
+            }
+
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .dashboard-card-wide {
+                grid-column: span 1;
+            }
+
+            .sector-status-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(10px);
+            z-index: 10000;
+            overflow-y: auto;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-content {
+            background: var(--dark-bg);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            max-width: 800px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            animation: slideUp 0.4s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .modal-header {
+            padding: 2rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            background: var(--dark-bg);
+            z-index: 10;
+        }
+
+        .modal-header h2 {
+            font-size: 1.8rem;
+            font-weight: 800;
+        }
+
+        .modal-close {
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-close:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: rotate(90deg);
+        }
+
+        #mappingForm {
+            padding: 2rem;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            margin-bottom: 2rem;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--electric-blue), var(--neon-purple));
+            border-radius: 10px;
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+
+        .sector-input-card {
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+            margin-bottom: 2rem;
+        }
+
+        .sector-input-card h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, var(--electric-blue), var(--neon-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: var(--text-primary);
+        }
+
+        .form-input,
+        .form-textarea {
+            width: 100%;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            color: white;
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus,
+        .form-textarea:focus {
+            outline: none;
+            border-color: var(--electric-blue);
+            background: rgba(59, 130, 246, 0.05);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .form-textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .form-actions button {
+            flex: 1;
+        }
+
+        #sectorsContainer {
+            margin-bottom: 2rem;
+        }
+
+        .added-sector {
+            padding: 1.5rem;
+            background: rgba(16, 185, 129, 0.05);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            border-radius: 16px;
+            margin-bottom: 1rem;
+            position: relative;
+        }
+
+        .added-sector-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .added-sector-title {
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: var(--success);
+        }
+
+        .remove-sector-btn {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            color: #ef4444;
+            padding: 0.4rem 0.8rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
+        }
+
+        .remove-sector-btn:hover {
+            background: rgba(239, 68, 68, 0.2);
+        }
+
+        .added-sector-info {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        .added-sector-info strong {
+            color: var(--text-primary);
+            display: block;
+            margin-top: 0.8rem;
+            margin-bottom: 0.3rem;
+        }
+
+        /* Admin Panel */
+        .admin-panel {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--black);
+            z-index: 10000;
+            overflow-y: auto;
+        }
+
+        .admin-panel.active {
+            display: block;
+        }
+
+        .admin-header {
+            padding: 2rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            background: var(--black);
+            z-index: 100;
+        }
+
+        .admin-header h2 {
+            font-size: 1.8rem;
+            font-weight: 800;
+        }
+
+        .admin-close {
+            width: 45px;
+            height: 45px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            color: white;
+            font-size: 1.8rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .admin-close:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: rotate(90deg);
+        }
+
+        .admin-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            padding: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .admin-stat-card {
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            text-align: center;
+        }
+
+        .admin-stat-label {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .admin-stat-value {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--electric-blue), var(--neon-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .admin-filters {
+            display: flex;
+            gap: 1rem;
+            padding: 0 2rem 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .admin-search {
+            flex: 1;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            color: white;
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+        }
+
+        .admin-search:focus {
+            outline: none;
+            border-color: var(--electric-blue);
+        }
+
+        .admin-select {
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            color: white;
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+
+        .admin-select:focus {
+            outline: none;
+            border-color: var(--electric-blue);
+        }
+
+        .mappings-list {
+            padding: 0 2rem 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .mapping-card {
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+            margin-bottom: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .mapping-card:hover {
+            border-color: rgba(59, 130, 246, 0.3);
+            transform: translateX(5px);
+        }
+
+        .mapping-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .mapping-user-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .mapping-avatar {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--electric-blue), var(--neon-purple));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .mapping-user-details h4 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 0.2rem;
+        }
+
+        .mapping-user-details p {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        .mapping-date {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .mapping-sectors {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .mapping-sector {
+            padding: 1.5rem;
+            background: rgba(59, 130, 246, 0.05);
+            border: 1px solid rgba(59, 130, 246, 0.1);
+            border-radius: 12px;
+        }
+
+        .mapping-sector-name {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--electric-blue);
+            margin-bottom: 1rem;
+        }
+
+        .mapping-sector-item {
+            margin-bottom: 0.8rem;
+        }
+
+        .mapping-sector-item strong {
+            display: block;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.3rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .mapping-sector-item p {
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        /* Admin Access Button */
+        .admin-access-btn {
+            position: fixed;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 30px;
+            height: 30px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 50%;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            opacity: 0.3;
+        }
+
+        .admin-access-btn:hover {
+            opacity: 1;
+            background: rgba(255, 255, 255, 0.05);
+            border-color: var(--electric-blue);
+            color: var(--electric-blue);
+        }
+
+        @media (max-width: 768px) {
+            .modal-content {
+                max-width: 100%;
+                margin: 1rem;
+            }
+
+            #mappingForm {
+                padding: 1rem;
+            }
+
+            .form-actions {
+                flex-direction: column;
+            }
+
+            .admin-filters {
+                flex-direction: column;
+            }
+
+            .mapping-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+        }
+
+        /* Glow effects */
+        .glow-effect {
+            position: fixed;
+            width: 600px;
+            height: 600px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(59, 130, 246, 0.15), transparent 70%);
+            pointer-events: none;
+            z-index: 0;
+            filter: blur(60px);
+        }
+
+        #glow1 {
+            top: 10%;
+            left: 20%;
+            animation: float 20s ease-in-out infinite;
+        }
+
+        #glow2 {
+            bottom: 20%;
+            right: 10%;
+            animation: float 25s ease-in-out infinite reverse;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0); }
+            50% { transform: translate(100px, -100px); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Particle Canvas -->
+    <canvas id="particle-canvas"></canvas>
+
+    <!-- Glow Effects -->
+    <div class="glow-effect" id="glow1"></div>
+    <div class="glow-effect" id="glow2"></div>
+
+    <!-- Navigation -->
+    <nav id="nav">
+        <div class="nav-container">
+            <div class="logo">Novera Digital</div>
+            <ul class="nav-links">
+                <li><a href="#processo">Como Funciona</a></li>
+                <li><a href="#setores">Setores</a></li>
+                <li><a href="#dashboard">Dashboard</a></li>
+                <li><a href="#plataforma">Plataforma</a></li>
+            </ul>
+            <button class="cta-nav" onclick="openMappingModal()">Mapear Minha Empresa</button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-badge">✦ Sistemas de IA Personalizados</div>
+            <h1>
+                Primeiro <span class="gradient-text">entendemos sua dor</span>. Depois criamos a solução perfeita.
+            </h1>
+            <p>
+                Mapeamos cada setor da sua empresa, identificamos processos manuais e criamos sistemas de IA customizados que se unificam em uma plataforma própria do seu negócio.
+            </p>
+            <div class="hero-cta">
+                <button class="btn-primary" onclick="openMappingModal()">Iniciar Diagnóstico Gratuito</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Understanding Section -->
+    <section id="processo">
+        <div class="section-header">
+            <div class="section-badge">🎯 Metodologia</div>
+            <h2 class="section-title">Como funciona nossa abordagem</h2>
+            <p class="section-description">
+                Não vendemos soluções prontas. Criamos sistemas de IA personalizados baseados nas necessidades reais de cada setor da sua empresa.
+            </p>
+        </div>
+
+        <div class="understanding-container">
+            <div class="understanding-content">
+                <h3>Entendimento profundo antes de qualquer solução</h3>
+                <p>
+                    Nosso processo começa com conversas detalhadas com gestores e equipes de cada departamento. Queremos saber:
+                </p>
+                <p style="margin-top: 1.5rem; padding-left: 1.5rem; border-left: 3px solid var(--electric-blue);">
+                    <strong>Qual é sua dor específica?</strong><br>
+                    <strong>Como funciona seu processo atual?</strong><br>
+                    <strong>O que você espera que a IA resolva?</strong>
+                </p>
+                <p style="margin-top: 1.5rem;">
+                    Só então projetamos sistemas inteligentes que resolvem problemas reais, não problemas imaginários.
+                </p>
+            </div>
+
+            <div class="understanding-visual">
+                <div class="understanding-steps">
+                    <div class="understanding-step">
+                        <div class="step-icon">🎤</div>
+                        <h4>1. Escuta Ativa</h4>
+                        <p>Conversamos com cada setor para entender dores, processos e expectativas reais.</p>
+                    </div>
+
+                    <div class="understanding-step">
+                        <div class="step-icon">📊</div>
+                        <h4>2. Mapeamento</h4>
+                        <p>Documentamos fluxos atuais, identificamos gargalos e quantificamos desperdícios.</p>
+                    </div>
+
+                    <div class="understanding-step">
+                        <div class="step-icon">🤖</div>
+                        <h4>3. Design de IA</h4>
+                        <p>Criamos sistemas customizados que resolvem exatamente o que você precisa.</p>
+                    </div>
+
+                    <div class="understanding-step">
+                        <div class="step-icon">🔗</div>
+                        <h4>4. Unificação</h4>
+                        <p>Integramos todos os sistemas setoriais em uma plataforma central da empresa.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sector Mapping -->
+    <section id="setores">
+        <div class="section-header">
+            <div class="section-badge">🏢 Mapeamento Setorial</div>
+            <h2 class="section-title">Criamos IA personalizada para cada setor</h2>
+            <p class="section-description">
+                Cada departamento tem dores específicas. Desenvolvemos sistemas de IA sob medida para resolver os problemas reais de cada área.
+            </p>
+        </div>
+
+        <div class="sector-grid">
+            <!-- Vendas -->
+            <div class="sector-card">
+                <div class="sector-label">Setor</div>
+                <div class="sector-header">
+                    <div class="sector-icon">📈</div>
+                    <h3>Vendas</h3>
+                </div>
+                
+                <div class="sector-label" style="margin-top: 1.5rem; color: #ef4444;">Dores Comuns</div>
+                <ul class="sector-problems">
+                    <li>Leads não qualificados consomem tempo da equipe</li>
+                    <li>Follow-up manual esquecido ou atrasado</li>
+                    <li>Sem visibilidade do funil em tempo real</li>
+                    <li>Propostas demoram dias para serem criadas</li>
+                </ul>
+
+                <div class="sector-label" style="margin-top: 1.5rem; color: var(--success);">Solução com IA</div>
+                <ul class="sector-solutions">
+                    <li>Qualificação automática de leads com scoring inteligente</li>
+                    <li>Follow-ups automáticos personalizados por perfil</li>
+                    <li>Dashboard preditivo com probabilidade de fechamento</li>
+                    <li>Gerador de propostas com IA em minutos</li>
+                </ul>
+            </div>
+
+            <!-- Marketing -->
+            <div class="sector-card">
+                <div class="sector-label">Setor</div>
+                <div class="sector-header">
+                    <div class="sector-icon">🎯</div>
+                    <h3>Marketing</h3>
+                </div>
+                
+                <div class="sector-label" style="margin-top: 1.5rem; color: #ef4444;">Dores Comuns</div>
+                <ul class="sector-problems">
+                    <li>Campanhas sem análise de ROI real</li>
+                    <li>Criação de conteúdo demora semanas</li>
+                    <li>Segmentação de público baseada em "achismos"</li>
+                    <li>Dados espalhados em várias ferramentas</li>
+                </ul>
+
+                <div class="sector-label" style="margin-top: 1.5rem; color: var(--success);">Solução com IA</div>
+                <ul class="sector-solutions">
+                    <li>Analytics unificado com atribuição multi-touch</li>
+                    <li>Geração de conteúdo com IA (textos, imagens, vídeos)</li>
+                    <li>Segmentação comportamental preditiva</li>
+                    <li>Otimização automática de campanhas via machine learning</li>
+                </ul>
+            </div>
+
+            <!-- Atendimento -->
+            <div class="sector-card">
+                <div class="sector-label">Setor</div>
+                <div class="sector-header">
+                    <div class="sector-icon">💬</div>
+                    <h3>Atendimento</h3>
+                </div>
+                
+                <div class="sector-label" style="margin-top: 1.5rem; color: #ef4444;">Dores Comuns</div>
+                <ul class="sector-problems">
+                    <li>Tempo de resposta alto gera insatisfação</li>
+                    <li>Mesmas perguntas respondidas repetidamente</li>
+                    <li>Equipe sobrecarregada com tarefas simples</li>
+                    <li>Histórico de atendimento fragmentado</li>
+                </ul>
+
+                <div class="sector-label" style="margin-top: 1.5rem; color: var(--success);">Solução com IA</div>
+                <ul class="sector-solutions">
+                    <li>Chatbot com IA generativa 24/7 (WhatsApp, site, email)</li>
+                    <li>Respostas instantâneas com conhecimento da base</li>
+                    <li>Roteamento inteligente para humanos quando necessário</li>
+                    <li>Histórico unificado e análise de sentimento</li>
+                </ul>
+            </div>
+
+            <!-- Operações -->
+            <div class="sector-card">
+                <div class="sector-label">Setor</div>
+                <div class="sector-header">
+                    <div class="sector-icon">⚙️</div>
+                    <h3>Operações</h3>
+                </div>
+                
+                <div class="sector-label" style="margin-top: 1.5rem; color: #ef4444;">Dores Comuns</div>
+                <ul class="sector-problems">
+                    <li>Processos manuais repetitivos e demorados</li>
+                    <li>Dados copiados manualmente entre sistemas</li>
+                    <li>Erros humanos custam tempo e dinheiro</li>
+                    <li>Falta de visibilidade de gargalos operacionais</li>
+                </ul>
+
+                <div class="sector-label" style="margin-top: 1.5rem; color: var(--success);">Solução com IA</div>
+                <ul class="sector-solutions">
+                    <li>Automação RPA de tarefas repetitivas</li>
+                    <li>Integração inteligente entre todos os sistemas</li>
+                    <li>Validação automática de dados com IA</li>
+                    <li>Alertas preditivos de gargalos antes que aconteçam</li>
+                </ul>
+            </div>
+
+            <!-- Financeiro -->
+            <div class="sector-card">
+                <div class="sector-label">Setor</div>
+                <div class="sector-header">
+                    <div class="sector-icon">💰</div>
+                    <h3>Financeiro</h3>
+                </div>
+                
+                <div class="sector-label" style="margin-top: 1.5rem; color: #ef4444;">Dores Comuns</div>
+                <ul class="sector-problems">
+                    <li>Conciliação bancária manual consome horas</li>
+                    <li>Inadimplência por falta de cobrança proativa</li>
+                    <li>Relatórios financeiros desatualizados</li>
+                    <li>Previsão de fluxo de caixa imprecisa</li>
+                </ul>
+
+                <div class="sector-label" style="margin-top: 1.5rem; color: var(--success);">Solução com IA</div>
+                <ul class="sector-solutions">
+                    <li>Conciliação automática com machine learning</li>
+                    <li>Cobrança inteligente multicanal automática</li>
+                    <li>Dashboards financeiros em tempo real</li>
+                    <li>Previsão de fluxo de caixa com IA preditiva</li>
+                </ul>
+            </div>
+
+            <!-- RH -->
+            <div class="sector-card">
+                <div class="sector-label">Setor</div>
+                <div class="sector-header">
+                    <div class="sector-icon">👥</div>
+                    <h3>Recursos Humanos</h3>
+                </div>
+                
+                <div class="sector-label" style="margin-top: 1.5rem; color: #ef4444;">Dores Comuns</div>
+                <ul class="sector-problems">
+                    <li>Triagem de currículos consome dias</li>
+                    <li>Onboarding manual e desorganizado</li>
+                    <li>Avaliações de desempenho subjetivas</li>
+                    <li>Turnover alto por falta de análise preditiva</li>
+                </ul>
+
+                <div class="sector-label" style="margin-top: 1.5rem; color: var(--success);">Solução com IA</div>
+                <ul class="sector-solutions">
+                    <li>Triagem inteligente de candidatos com matching IA</li>
+                    <li>Onboarding automatizado e personalizado</li>
+                    <li>Analytics de performance baseado em dados</li>
+                    <li>Predição de turnover e recomendações de retenção</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Process Flow -->
+    <section>
+        <div class="section-header">
+            <div class="section-badge">🔄 Jornada</div>
+            <h2 class="section-title">Do diagnóstico à plataforma unificada</h2>
+            <p class="section-description">
+                Nossa metodologia garante que cada sistema de IA criado se integre perfeitamente em uma plataforma central.
+            </p>
+        </div>
+
+        <div class="process-flow">
+            <div class="process-steps">
+                <div class="process-step">
+                    <div class="process-number">1</div>
+                    <h4>Imersão</h4>
+                    <p>Entrevistas com gestores e equipes de cada setor para mapear dores e processos atuais.</p>
+                </div>
+
+                <div class="process-step">
+                    <div class="process-number">2</div>
+                    <h4>Diagnóstico</h4>
+                    <p>Documento detalhado por setor com gargalos identificados e ROI projetado.</p>
+                </div>
+
+                <div class="process-step">
+                    <div class="process-number">3</div>
+                    <h4>Design Setorial</h4>
+                    <p>Criação de sistemas de IA customizados para cada departamento específico.</p>
+                </div>
+
+                <div class="process-step">
+                    <div class="process-number">4</div>
+                    <h4>Unificação</h4>
+                    <p>Integração de todos os sistemas em uma plataforma central da empresa.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Dashboard Control -->
+    <section id="dashboard">
+        <div class="section-header">
+            <div class="section-badge">📊 Controle Total</div>
+            <h2 class="section-title">Tenha controle total da sua empresa em um único dashboard</h2>
+            <p class="section-description">
+                Visualize em tempo real todas as operações, métricas e IA de cada setor trabalhando de forma unificada. Toda a inteligência do seu negócio em uma tela.
+            </p>
+        </div>
+
+        <div class="dashboard-preview">
+            <div class="dashboard-screen">
+                <div class="dashboard-header">
+                    <div class="dashboard-logo">🧠 Novera Intelligence</div>
+                    <div class="dashboard-user">
+                        <span style="margin-right: 1rem; color: var(--text-secondary); font-size: 0.9rem;">CEO Dashboard</span>
+                        <div style="width: 40px; height: 40px; background: linear-gradient(135deg, var(--electric-blue), var(--neon-purple)); border-radius: 50%;"></div>
+                    </div>
+                </div>
+
+                <div class="dashboard-grid">
+                    <div class="dashboard-card">
+                        <div class="dashboard-card-header">
+                            <span>📈 Vendas em Tempo Real</span>
+                            <span class="dashboard-status">●</span>
+                        </div>
+                        <div class="dashboard-metric">R$ 847.2K</div>
+                        <div class="dashboard-change positive">+23.5% vs mês anterior</div>
+                        <div class="dashboard-mini-chart"></div>
+                    </div>
+
+                    <div class="dashboard-card">
+                        <div class="dashboard-card-header">
+                            <span>🤖 IA Atendendo</span>
+                            <span class="dashboard-status">●</span>
+                        </div>
+                        <div class="dashboard-metric">147</div>
+                        <div class="dashboard-change">conversas simultâneas</div>
+                        <div class="dashboard-mini-chart"></div>
+                    </div>
+
+                    <div class="dashboard-card">
+                        <div class="dashboard-card-header">
+                            <span>⚡ Automações Ativas</span>
+                            <span class="dashboard-status">●</span>
+                        </div>
+                        <div class="dashboard-metric">34</div>
+                        <div class="dashboard-change positive">+12 esta semana</div>
+                        <div class="dashboard-mini-chart"></div>
+                    </div>
+
+                    <div class="dashboard-card">
+                        <div class="dashboard-card-header">
+                            <span>💰 ROI de IA</span>
+                            <span class="dashboard-status">●</span>
+                        </div>
+                        <div class="dashboard-metric">487%</div>
+                        <div class="dashboard-change positive">economizou R$ 120K</div>
+                        <div class="dashboard-mini-chart"></div>
+                    </div>
+
+                    <div class="dashboard-card dashboard-card-wide">
+                        <div class="dashboard-card-header">
+                            <span>🎯 Pipeline Inteligente</span>
+                            <span style="font-size: 0.85rem; color: var(--text-muted);">Probabilidade calculada por IA</span>
+                        </div>
+                        <div style="display: flex; gap: 1rem; margin-top: 1rem;">
+                            <div style="flex: 1; text-align: center; padding: 1rem; background: rgba(59, 130, 246, 0.1); border-radius: 8px;">
+                                <div style="font-size: 1.5rem; font-weight: 700; color: var(--electric-blue);">R$ 2.3M</div>
+                                <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.3rem;">Em negociação</div>
+                            </div>
+                            <div style="flex: 1; text-align: center; padding: 1rem; background: rgba(16, 185, 129, 0.1); border-radius: 8px;">
+                                <div style="font-size: 1.5rem; font-weight: 700; color: var(--success);">87%</div>
+                                <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.3rem;">Taxa de conversão</div>
+                            </div>
+                            <div style="flex: 1; text-align: center; padding: 1rem; background: rgba(168, 85, 247, 0.1); border-radius: 8px;">
+                                <div style="font-size: 1.5rem; font-weight: 700; color: var(--neon-purple);">3.2 dias</div>
+                                <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.3rem;">Ciclo médio</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="dashboard-card dashboard-card-wide">
+                        <div class="dashboard-card-header">
+                            <span>🏢 Status dos Setores</span>
+                        </div>
+                        <div class="sector-status-grid">
+                            <div class="sector-status-item">
+                                <div class="sector-status-icon" style="background: rgba(59, 130, 246, 0.2);">📈</div>
+                                <div>
+                                    <div style="font-weight: 600; font-size: 0.9rem;">Vendas</div>
+                                    <div style="font-size: 0.75rem; color: var(--success);">● 12 automações rodando</div>
+                                </div>
+                            </div>
+                            <div class="sector-status-item">
+                                <div class="sector-status-icon" style="background: rgba(168, 85, 247, 0.2);">🎯</div>
+                                <div>
+                                    <div style="font-weight: 600; font-size: 0.9rem;">Marketing</div>
+                                    <div style="font-size: 0.75rem; color: var(--success);">● 8 campanhas ativas</div>
+                                </div>
+                            </div>
+                            <div class="sector-status-item">
+                                <div class="sector-status-icon" style="background: rgba(16, 185, 129, 0.2);">💬</div>
+                                <div>
+                                    <div style="font-weight: 600; font-size: 0.9rem;">Atendimento</div>
+                                    <div style="font-size: 0.75rem; color: var(--success);">● 147 em atendimento</div>
+                                </div>
+                            </div>
+                            <div class="sector-status-item">
+                                <div class="sector-status-icon" style="background: rgba(239, 68, 68, 0.2);">⚙️</div>
+                                <div>
+                                    <div style="font-weight: 600; font-size: 0.9rem;">Operações</div>
+                                    <div style="font-size: 0.75rem; color: var(--success);">● 23 processos automatizados</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="dashboard-benefits">
+                <div class="dashboard-benefit">
+                    <div class="dashboard-benefit-icon">👁️</div>
+                    <h4>Visibilidade Total</h4>
+                    <p>Acompanhe todas as operações da empresa em tempo real, sem precisar abrir 15 ferramentas diferentes.</p>
+                </div>
+                <div class="dashboard-benefit">
+                    <div class="dashboard-benefit-icon">🎯</div>
+                    <h4>Decisões Baseadas em Dados</h4>
+                    <p>IA analisa padrões e fornece insights acionáveis para tomada de decisão estratégica.</p>
+                </div>
+                <div class="dashboard-benefit">
+                    <div class="dashboard-benefit-icon">⚡</div>
+                    <h4>Alertas Inteligentes</h4>
+                    <p>Seja notificado automaticamente sobre oportunidades, gargalos e anomalias antes que virem problemas.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Unified Platform -->
+    <section id="plataforma">
+        <div class="section-header">
+            <div class="section-badge">🚀 Plataforma Unificada</div>
+            <h2 class="section-title">Todos os sistemas se tornam um só</h2>
+            <p class="section-description">
+                Após mapear e criar IA para cada setor, unificamos tudo em uma plataforma própria da sua empresa, centralizando dados e inteligência.
+            </p>
+        </div>
+
+        <div class="platform-container">
+            <div class="platform-visual">
+                <div class="platform-layers">
+                    <div class="platform-layer">
+                        <h4>
+                            <span class="platform-layer-icon">🧠</span>
+                            Camada de Inteligência Central
+                        </h4>
+                        <div class="platform-modules">
+                            <span class="platform-module">Motor de IA</span>
+                            <span class="platform-module">Machine Learning</span>
+                            <span class="platform-module">Análise Preditiva</span>
+                            <span class="platform-module">Processamento de Linguagem</span>
+                        </div>
+                    </div>
+
+                    <div class="platform-layer">
+                        <h4>
+                            <span class="platform-layer-icon">🔗</span>
+                            Camada de Integração
+                        </h4>
+                        <div class="platform-modules">
+                            <span class="platform-module">APIs Unificadas</span>
+                            <span class="platform-module">Webhooks</span>
+                            <span class="platform-module">Conectores Setoriais</span>
+                            <span class="platform-module">Sincronização em Tempo Real</span>
+                        </div>
+                    </div>
+
+                    <div class="platform-layer">
+                        <h4>
+                            <span class="platform-layer-icon">📊</span>
+                            Sistemas Setoriais
+                        </h4>
+                        <div class="platform-modules">
+                            <span class="platform-module">IA de Vendas</span>
+                            <span class="platform-module">IA de Marketing</span>
+                            <span class="platform-module">IA de Atendimento</span>
+                            <span class="platform-module">IA de Operações</span>
+                            <span class="platform-module">IA Financeira</span>
+                            <span class="platform-module">IA de RH</span>
+                        </div>
+                    </div>
+
+                    <div class="platform-layer">
+                        <h4>
+                            <span class="platform-layer-icon">👥</span>
+                            Interface Unificada
+                        </h4>
+                        <div class="platform-modules">
+                            <span class="platform-module">Dashboard Executivo</span>
+                            <span class="platform-module">Painéis por Setor</span>
+                            <span class="platform-module">Mobile App</span>
+                            <span class="platform-module">Notificações Inteligentes</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="margin-top: 4rem; max-width: 800px; margin-left: auto; margin-right: auto;">
+                <h3 style="font-size: 2rem; font-weight: 700; margin-bottom: 1.5rem; text-align: center;">
+                    Resultado: Uma plataforma própria que cresce com sua empresa
+                </h3>
+                <p style="color: var(--text-secondary); line-height: 1.8; font-size: 1.1rem; text-align: center;">
+                    Não é um CRM genérico. Não é uma ferramenta pronta. É um <strong style="color: var(--electric-blue);">ecossistema inteligente construído especificamente para o seu negócio</strong>, com IA que entende suas regras, seus processos e suas necessidades únicas.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Final CTA -->
+    <section class="final-cta" id="contato">
+        <h2>Vamos mapear sua empresa e criar sua IA personalizada?</h2>
+        <p>
+            Agende um diagnóstico gratuito. Vamos entender suas dores setor por setor e mostrar exatamente como IA customizada pode transformar seus resultados.
+        </p>
+        
+        <div class="cta-features">
+            <div class="cta-feature">Diagnóstico gratuito completo</div>
+            <div class="cta-feature">Mapeamento de todos os setores</div>
+            <div class="cta-feature">Proposta técnica detalhada</div>
+            <div class="cta-feature">ROI projetado por área</div>
+        </div>
+
+        <button class="btn-primary" onclick="openMappingModal()" style="font-size: 1.1rem; padding: 1.2rem 3rem; margin-top: 1rem;">Agendar Diagnóstico Gratuito</button>
+    </section>
+
+    <!-- Mapping Modal -->
+    <div id="mappingModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>🏢 Mapeie sua empresa setor por setor</h2>
+                <button class="modal-close" onclick="closeMappingModal()">&times;</button>
+            </div>
+
+            <div id="mappingForm">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+
+                <div id="sectorsContainer"></div>
+
+                <div class="sector-input-card" id="currentSectorInput">
+                    <h3>Setor <span id="sectorNumber">1</span></h3>
+                    
+                    <div class="form-group">
+                        <label>Nome do Setor</label>
+                        <input type="text" id="sectorName" placeholder="Ex: Vendas, Marketing, Atendimento..." class="form-input">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Qual a principal dor deste setor?</label>
+                        <textarea id="sectorPain" placeholder="Descreva o maior problema ou gargalo que este setor enfrenta atualmente..." class="form-textarea" rows="4"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Que solução com IA você espera?</label>
+                        <textarea id="sectorSolution" placeholder="Como você imagina que a IA poderia resolver este problema?" class="form-textarea" rows="4"></textarea>
+                    </div>
+
+                    <div class="form-actions">
+                        <button onclick="addSector()" class="btn-secondary" id="addSectorBtn">
+                            ➕ Adicionar Outro Setor
+                        </button>
+                        <button onclick="showContactForm()" class="btn-primary" id="finishMappingBtn">
+                            Finalizar Mapeamento →
+                        </button>
+                    </div>
+                </div>
+
+                <div id="contactForm" style="display: none;">
+                    <div class="sector-input-card">
+                        <h3>📞 Seus dados para contato</h3>
+                        
+                        <div class="form-group">
+                            <label>Seu Nome Completo</label>
+                            <input type="text" id="userName" placeholder="Como podemos te chamar?" class="form-input">
+                        </div>
+
+                        <div class="form-group">
+                            <label>WhatsApp para Contato</label>
+                            <input type="tel" id="userWhatsApp" placeholder="(21) 98904-0590" class="form-input">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Email (opcional)</label>
+                            <input type="email" id="userEmail" placeholder="seu@email.com" class="form-input">
+                        </div>
+
+                        <button onclick="submitMapping()" class="btn-primary" style="width: 100%; margin-top: 1rem;">
+                            🚀 Enviar Mapeamento Completo
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="successMessage" style="display: none; text-align: center; padding: 3rem;">
+                <div style="font-size: 4rem; margin-bottom: 1rem;">✅</div>
+                <h3 style="font-size: 2rem; margin-bottom: 1rem;">Mapeamento enviado com sucesso!</h3>
+                <p style="color: var(--text-secondary); margin-bottom: 2rem;">Nossa equipe vai analisar seu mapeamento e entrar em contato em breve.</p>
+                <button onclick="closeMappingModal()" class="btn-primary">Fechar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Panel -->
+    <div id="adminPanel" class="admin-panel">
+        <div class="admin-header">
+            <h2>🔐 Painel Administrativo - Novera Digital</h2>
+            <button onclick="closeAdminPanel()" class="admin-close">&times;</button>
+        </div>
+
+        <div class="admin-stats">
+            <div class="admin-stat-card">
+                <div class="admin-stat-label">Total de Mapeamentos</div>
+                <div class="admin-stat-value" id="totalMappings">0</div>
+            </div>
+            <div class="admin-stat-card">
+                <div class="admin-stat-label">Hoje</div>
+                <div class="admin-stat-value" id="todayMappings">0</div>
+            </div>
+            <div class="admin-stat-card">
+                <div class="admin-stat-label">Esta Semana</div>
+                <div class="admin-stat-value" id="weekMappings">0</div>
+            </div>
+        </div>
+
+        <div class="admin-filters">
+            <input type="text" id="searchFilter" placeholder="🔍 Buscar por nome, email ou setor..." class="admin-search">
+            <select id="dateFilter" class="admin-select">
+                <option value="all">Todos os períodos</option>
+                <option value="today">Hoje</option>
+                <option value="week">Esta semana</option>
+                <option value="month">Este mês</option>
+            </select>
+        </div>
+
+        <div id="mappingsList" class="mappings-list">
+            <!-- Mappings will be rendered here -->
+        </div>
+    </div>
+
+    <!-- Login Modal -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content" style="max-width: 400px;">
+            <div class="modal-header">
+                <h2>🔐 Acesso Gestor</h2>
+                <button class="modal-close" onclick="closeLoginModal()">&times;</button>
+            </div>
+
+            <div style="padding: 2rem;">
+                <div class="form-group">
+                    <label>Login</label>
+                    <input type="text" id="loginUsername" placeholder="Digite o login" class="form-input">
+                </div>
+
+                <div class="form-group">
+                    <label>Senha</label>
+                    <input type="password" id="loginPassword" placeholder="Digite a senha" class="form-input">
+                </div>
+
+                <div id="loginError" style="color: #ef4444; font-size: 0.9rem; margin-bottom: 1rem; display: none;"></div>
+
+                <button onclick="attemptLogin()" class="btn-primary" style="width: 100%;">Entrar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- WhatsApp Floating Button -->
+    <div class="whatsapp-float">
+        <div class="whatsapp-tooltip">Fale com um especialista agora!</div>
+        <a href="https://wa.me/5521989040590?text=Olá!%20Gostaria%20de%20agendar%20um%20diagnóstico%20gratuito%20e%20conhecer%20como%20a%20IA%20pode%20transformar%20minha%20empresa." target="_blank" class="whatsapp-button">
+            <svg class="whatsapp-icon" viewBox="0 0 24 24" fill="white">
+                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+            </svg>
+        </a>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-brand">
+                <h3>Novera Digital</h3>
+                <p>Criamos sistemas de inteligência artificial personalizados para cada setor da sua empresa, unificados em uma plataforma própria do seu negócio.</p>
+            </div>
+
+            <div class="footer-links">
+                <h4>Metodologia</h4>
+                <ul>
+                    <li><a href="#processo">Como Funciona</a></li>
+                    <li><a href="#setores">Mapeamento Setorial</a></li>
+                    <li><a href="#plataforma">Plataforma Unificada</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-links">
+                <h4>Setores</h4>
+                <ul>
+                    <li><a href="#setores">Vendas</a></li>
+                    <li><a href="#setores">Marketing</a></li>
+                    <li><a href="#setores">Atendimento</a></li>
+                    <li><a href="#setores">Operações</a></li>
+                    <li><a href="#setores">Financeiro</a></li>
+                    <li><a href="#setores">RH</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-links">
+                <h4>Contato</h4>
+                <ul>
+                    <li><a href="mailto:contato@noveradigital.com">contato@noveradigital.com</a></li>
+                    <li><a href="tel:+5511999999999">+55 11 99999-9999</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>&copy; 2026 Novera Digital. Todos os direitos reservados.</p>
+            <button onclick="openLoginModal()" class="admin-access-btn">🔐</button>
+        </div>
+    </footer>
+
+    <script>
+        // Particle System
+        const canvas = document.getElementById('particle-canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const particles = [];
+        const particleCount = 80;
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 2;
+                this.speedX = (Math.random() - 0.5) * 0.5;
+                this.speedY = (Math.random() - 0.5) * 0.5;
+                this.opacity = Math.random() * 0.5;
+            }
+
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+
+                if (this.x > canvas.width) this.x = 0;
+                if (this.x < 0) this.x = canvas.width;
+                if (this.y > canvas.height) this.y = 0;
+                if (this.y < 0) this.y = canvas.height;
+            }
+
+            draw() {
+                ctx.fillStyle = `rgba(59, 130, 246, ${this.opacity})`;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        for (let i = 0; i < particleCount; i++) {
+            particles.push(new Particle());
+        }
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            particles.forEach(particle => {
+                particle.update();
+                particle.draw();
+            });
+
+            particles.forEach((p1, i) => {
+                particles.slice(i + 1).forEach(p2 => {
+                    const dx = p1.x - p2.x;
+                    const dy = p1.y - p2.y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+
+                    if (distance < 150) {
+                        ctx.strokeStyle = `rgba(59, 130, 246, ${0.1 * (1 - distance / 150)})`;
+                        ctx.lineWidth = 0.5;
+                        ctx.beginPath();
+                        ctx.moveTo(p1.x, p1.y);
+                        ctx.lineTo(p2.x, p2.y);
+                        ctx.stroke();
+                    }
+                });
+            });
+
+            requestAnimationFrame(animateParticles);
+        }
+
+        animateParticles();
+
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+
+        // GSAP Scroll Animations
+        gsap.registerPlugin(ScrollTrigger);
+
+        gsap.utils.toArray('.sector-card').forEach((card, i) => {
+            gsap.from(card, {
+                scrollTrigger: {
+                    trigger: card,
+                    start: 'top 80%',
+                },
+                y: 100,
+                opacity: 0,
+                duration: 0.8,
+                delay: i * 0.1
+            });
+        });
+
+        gsap.utils.toArray('.platform-layer').forEach((layer, i) => {
+            gsap.from(layer, {
+                scrollTrigger: {
+                    trigger: layer,
+                    start: 'top 85%',
+                },
+                x: i % 2 === 0 ? -100 : 100,
+                opacity: 0,
+                duration: 0.8,
+                delay: i * 0.15
+            });
+        });
+
+        gsap.utils.toArray('.understanding-step').forEach((step, i) => {
+            gsap.from(step, {
+                scrollTrigger: {
+                    trigger: step,
+                    start: 'top 85%',
+                },
+                x: -50,
+                opacity: 0,
+                duration: 0.6,
+                delay: i * 0.15
+            });
+        });
+
+        gsap.utils.toArray('.process-step').forEach((step, i) => {
+            gsap.from(step, {
+                scrollTrigger: {
+                    trigger: step,
+                    start: 'top 85%',
+                },
+                y: 80,
+                opacity: 0,
+                duration: 0.7,
+                delay: i * 0.2
+            });
+        });
+
+        // Animate dashboard cards
+        gsap.utils.toArray('.dashboard-card').forEach((card, i) => {
+            gsap.from(card, {
+                scrollTrigger: {
+                    trigger: card,
+                    start: 'top 85%',
+                },
+                y: 60,
+                opacity: 0,
+                duration: 0.6,
+                delay: i * 0.1
+            });
+        });
+
+        gsap.utils.toArray('.dashboard-benefit').forEach((benefit, i) => {
+            gsap.from(benefit, {
+                scrollTrigger: {
+                    trigger: benefit,
+                    start: 'top 85%',
+                },
+                y: 50,
+                opacity: 0,
+                duration: 0.6,
+                delay: i * 0.15
+            });
+        });
+
+        // Nav scroll effect
+        const nav = document.getElementById('nav');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                nav.classList.add('scrolled');
+            } else {
+                nav.classList.remove('scrolled');
+            }
+        });
+
+        // Smooth scroll
+        function scrollToContact() {
+            document.getElementById('contato').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // 3D card effect
+        document.querySelectorAll('.sector-card').forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                
+                const rotateX = (y - centerY) / 25;
+                const rotateY = (centerX - x) / 25;
+                
+                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-12px) scale(1.02)`;
+            });
+            
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) translateY(0) scale(1)';
+            });
+        });
+
+        // Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyDrdI5yaMMXW2Ij4cY-kidhHd8vCQyoUPM",
+            authDomain: "novera-digital-ia.firebaseapp.com",
+            databaseURL: "https://novera-digital-ia-default-rtdb.firebaseio.com",
+            projectId: "novera-digital-ia",
+            storageBucket: "novera-digital-ia.firebasestorage.app",
+            messagingSenderId: "116391546237",
+            appId: "1:116391546237:web:815c944e4bfdb5e63b5014"
+        };
+
+        // Initialize Firebase
+        let database;
+        try {
+            firebase.initializeApp(firebaseConfig);
+            database = firebase.database();
+            console.log('✅ Firebase conectado com sucesso!');
+        } catch (error) {
+            console.error('❌ Erro ao conectar Firebase:', error);
+            alert('⚠️ ATENÇÃO: Configure o Firebase para sincronização em tempo real!\n\nSiga as instruções no console.');
+        }
+
+        // Mapping Modal System
+        let sectors = [];
+        let currentSectorIndex = 0;
+
+        function openMappingModal() {
+            document.getElementById('mappingModal').classList.add('active');
+            resetMappingForm();
+        }
+
+        function closeMappingModal() {
+            document.getElementById('mappingModal').classList.remove('active');
+            resetMappingForm();
+        }
+
+        function resetMappingForm() {
+            sectors = [];
+            currentSectorIndex = 0;
+            document.getElementById('sectorsContainer').innerHTML = '';
+            document.getElementById('sectorName').value = '';
+            document.getElementById('sectorPain').value = '';
+            document.getElementById('sectorSolution').value = '';
+            document.getElementById('sectorNumber').textContent = '1';
+            document.getElementById('currentSectorInput').style.display = 'block';
+            document.getElementById('contactForm').style.display = 'none';
+            document.getElementById('successMessage').style.display = 'none';
+            updateProgress();
+        }
+
+        function addSector() {
+            const name = document.getElementById('sectorName').value.trim();
+            const pain = document.getElementById('sectorPain').value.trim();
+            const solution = document.getElementById('sectorSolution').value.trim();
+
+            if (!name || !pain || !solution) {
+                alert('Por favor, preencha todos os campos do setor atual antes de adicionar outro.');
+                return;
+            }
+
+            sectors.push({ name, pain, solution });
+            
+            // Add to container
+            const container = document.getElementById('sectorsContainer');
+            const sectorDiv = document.createElement('div');
+            sectorDiv.className = 'added-sector';
+            sectorDiv.innerHTML = `
+                <div class="added-sector-header">
+                    <div class="added-sector-title">✓ ${name}</div>
+                    <button class="remove-sector-btn" onclick="removeSector(${sectors.length - 1})">Remover</button>
+                </div>
+                <div class="added-sector-info">
+                    <strong>Dor:</strong> ${pain}
+                    <strong>Solução esperada:</strong> ${solution}
+                </div>
+            `;
+            container.appendChild(sectorDiv);
+
+            // Clear form
+            document.getElementById('sectorName').value = '';
+            document.getElementById('sectorPain').value = '';
+            document.getElementById('sectorSolution').value = '';
+            
+            currentSectorIndex++;
+            document.getElementById('sectorNumber').textContent = currentSectorIndex + 1;
+            updateProgress();
+
+            // Scroll to new input
+            document.getElementById('currentSectorInput').scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        function removeSector(index) {
+            sectors.splice(index, 1);
+            renderSectors();
+            currentSectorIndex = sectors.length;
+            document.getElementById('sectorNumber').textContent = currentSectorIndex + 1;
+            updateProgress();
+        }
+
+        function renderSectors() {
+            const container = document.getElementById('sectorsContainer');
+            container.innerHTML = '';
+            sectors.forEach((sector, index) => {
+                const sectorDiv = document.createElement('div');
+                sectorDiv.className = 'added-sector';
+                sectorDiv.innerHTML = `
+                    <div class="added-sector-header">
+                        <div class="added-sector-title">✓ ${sector.name}</div>
+                        <button class="remove-sector-btn" onclick="removeSector(${index})">Remover</button>
+                    </div>
+                    <div class="added-sector-info">
+                        <strong>Dor:</strong> ${sector.pain}
+                        <strong>Solução esperada:</strong> ${sector.solution}
+                    </div>
+                `;
+                container.appendChild(sectorDiv);
+            });
+        }
+
+        function updateProgress() {
+            const progress = sectors.length > 0 ? 50 : 0;
+            document.getElementById('progressFill').style.width = progress + '%';
+        }
+
+        function showContactForm() {
+            const name = document.getElementById('sectorName').value.trim();
+            const pain = document.getElementById('sectorPain').value.trim();
+            const solution = document.getElementById('sectorSolution').value.trim();
+
+            if (name && pain && solution) {
+                sectors.push({ name, pain, solution });
+            }
+
+            if (sectors.length === 0) {
+                alert('Por favor, adicione pelo menos um setor antes de finalizar.');
+                return;
+            }
+
+            document.getElementById('currentSectorInput').style.display = 'none';
+            document.getElementById('contactForm').style.display = 'block';
+            document.getElementById('progressFill').style.width = '75%';
+            
+            document.getElementById('contactForm').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        function submitMapping() {
+            const userName = document.getElementById('userName').value.trim();
+            const userWhatsApp = document.getElementById('userWhatsApp').value.trim();
+            const userEmail = document.getElementById('userEmail').value.trim();
+
+            if (!userName || !userWhatsApp) {
+                alert('Por favor, preencha seu nome e WhatsApp.');
+                return;
+            }
+
+            const mapping = {
+                id: Date.now(),
+                timestamp: new Date().toISOString(),
+                user: {
+                    name: userName,
+                    whatsapp: userWhatsApp,
+                    email: userEmail
+                },
+                sectors: sectors
+            };
+
+            // Save to Firebase
+            if (database) {
+                database.ref('mappings/' + mapping.id).set(mapping)
+                    .then(() => {
+                        console.log('✅ Mapeamento salvo no Firebase!');
+                        showSuccessMessage();
+                    })
+                    .catch((error) => {
+                        console.error('❌ Erro ao salvar:', error);
+                        alert('Erro ao enviar. Por favor, tente novamente.');
+                    });
+            } else {
+                // Fallback para localStorage se Firebase não estiver configurado
+                let mappings = JSON.parse(localStorage.getItem('noveraMappings') || '[]');
+                mappings.unshift(mapping);
+                localStorage.setItem('noveraMappings', JSON.stringify(mappings));
+                showSuccessMessage();
+            }
+        }
+
+        function showSuccessMessage() {
+            document.getElementById('mappingForm').style.display = 'none';
+            document.getElementById('successMessage').style.display = 'block';
+            document.getElementById('progressFill').style.width = '100%';
+
+            setTimeout(() => {
+                closeMappingModal();
+            }, 3000);
+        }
+
+        // Admin Panel System
+        function openLoginModal() {
+            document.getElementById('loginModal').classList.add('active');
+            document.getElementById('loginUsername').value = '';
+            document.getElementById('loginPassword').value = '';
+            document.getElementById('loginError').style.display = 'none';
+        }
+
+        function closeLoginModal() {
+            document.getElementById('loginModal').classList.remove('active');
+        }
+
+        function attemptLogin() {
+            const username = document.getElementById('loginUsername').value;
+            const password = document.getElementById('loginPassword').value;
+
+            if (username === 'noveradigital' && password === 'trocar123') {
+                closeLoginModal();
+                openAdminPanel();
+            } else {
+                document.getElementById('loginError').textContent = 'Login ou senha incorretos.';
+                document.getElementById('loginError').style.display = 'block';
+            }
+        }
+
+        function openAdminPanel() {
+            document.getElementById('adminPanel').classList.add('active');
+            loadMappings();
+            
+            // Listen for real-time updates
+            if (database) {
+                database.ref('mappings').on('value', (snapshot) => {
+                    console.log('🔄 Dados atualizados em tempo real!');
+                    loadMappings();
+                });
+            }
+        }
+
+        function closeAdminPanel() {
+            document.getElementById('adminPanel').classList.remove('active');
+            
+            // Stop listening for updates
+            if (database) {
+                database.ref('mappings').off('value');
+            }
+        }
+
+        function loadMappings(filter = 'all', search = '') {
+            if (database) {
+                // Load from Firebase
+                database.ref('mappings').once('value')
+                    .then((snapshot) => {
+                        const data = snapshot.val();
+                        const mappings = data ? Object.values(data).sort((a, b) => b.timestamp.localeCompare(a.timestamp)) : [];
+                        processMappings(mappings, filter, search);
+                    })
+                    .catch((error) => {
+                        console.error('❌ Erro ao carregar do Firebase:', error);
+                        loadFromLocalStorage(filter, search);
+                    });
+            } else {
+                // Fallback para localStorage
+                loadFromLocalStorage(filter, search);
+            }
+        }
+
+        function loadFromLocalStorage(filter, search) {
+            const mappings = JSON.parse(localStorage.getItem('noveraMappings') || '[]');
+            processMappings(mappings, filter, search);
+        }
+
+        function processMappings(mappings, filter, search) {
+            // Filter by date
+            let filtered = mappings;
+            const now = new Date();
+            
+            if (filter === 'today') {
+                filtered = mappings.filter(m => {
+                    const date = new Date(m.timestamp);
+                    return date.toDateString() === now.toDateString();
+                });
+            } else if (filter === 'week') {
+                const weekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+                filtered = mappings.filter(m => new Date(m.timestamp) >= weekAgo);
+            } else if (filter === 'month') {
+                const monthAgo = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
+                filtered = mappings.filter(m => new Date(m.timestamp) >= monthAgo);
+            }
+
+            // Search filter
+            if (search) {
+                filtered = filtered.filter(m => {
+                    const searchLower = search.toLowerCase();
+                    return m.user.name.toLowerCase().includes(searchLower) ||
+                           m.user.email.toLowerCase().includes(searchLower) ||
+                           m.user.whatsapp.includes(search) ||
+                           m.sectors.some(s => s.name.toLowerCase().includes(searchLower));
+                });
+            }
+
+            // Update stats
+            document.getElementById('totalMappings').textContent = mappings.length;
+            
+            const today = mappings.filter(m => {
+                const date = new Date(m.timestamp);
+                return date.toDateString() === now.toDateString();
+            });
+            document.getElementById('todayMappings').textContent = today.length;
+
+            const weekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+            const week = mappings.filter(m => new Date(m.timestamp) >= weekAgo);
+            document.getElementById('weekMappings').textContent = week.length;
+
+            // Render mappings
+            renderMappings(filtered);
+        }
+
+        function renderMappings(mappings) {
+            const container = document.getElementById('mappingsList');
+            
+            if (mappings.length === 0) {
+                container.innerHTML = `
+                    <div style="text-align: center; padding: 4rem; color: var(--text-secondary);">
+                        <div style="font-size: 3rem; margin-bottom: 1rem;">📋</div>
+                        <p>Nenhum mapeamento encontrado.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = mappings.map(mapping => {
+                const date = new Date(mapping.timestamp);
+                const initials = mapping.user.name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+                
+                return `
+                    <div class="mapping-card">
+                        <div class="mapping-header">
+                            <div class="mapping-user-info">
+                                <div class="mapping-avatar">${initials}</div>
+                                <div class="mapping-user-details">
+                                    <h4>${mapping.user.name}</h4>
+                                    <p>📱 ${mapping.user.whatsapp}${mapping.user.email ? ' • 📧 ' + mapping.user.email : ''}</p>
+                                </div>
+                            </div>
+                            <div class="mapping-date">
+                                ${date.toLocaleDateString('pt-BR')} às ${date.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}
+                            </div>
+                        </div>
+                        <div class="mapping-sectors">
+                            ${mapping.sectors.map(sector => `
+                                <div class="mapping-sector">
+                                    <div class="mapping-sector-name">🏢 ${sector.name}</div>
+                                    <div class="mapping-sector-item">
+                                        <strong>Dor</strong>
+                                        <p>${sector.pain}</p>
+                                    </div>
+                                    <div class="mapping-sector-item">
+                                        <strong>Solução Esperada</strong>
+                                        <p>${sector.solution}</p>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Admin filters
+        document.addEventListener('DOMContentLoaded', () => {
+            const searchFilter = document.getElementById('searchFilter');
+            const dateFilter = document.getElementById('dateFilter');
+
+            if (searchFilter) {
+                searchFilter.addEventListener('input', (e) => {
+                    loadMappings(dateFilter.value, e.target.value);
+                });
+            }
+
+            if (dateFilter) {
+                dateFilter.addEventListener('change', (e) => {
+                    loadMappings(e.target.value, searchFilter.value);
+                });
+            }
+
+            // Close modals on ESC
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    closeMappingModal();
+                    closeLoginModal();
+                    closeAdminPanel();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
