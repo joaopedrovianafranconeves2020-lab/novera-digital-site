@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Novera Digital — Automações para Clínicas de Saúde</title>
-    <meta name="description" content="Automações prontas e personalizadas exclusivamente para clínicas de saúde. Reduza faltas, automatize agendamentos e foque no que importa: seus pacientes.">
+    <title>Novera OS — Agentes de IA para Gestão Autônoma de Empresas</title>
+    <meta name="description" content="Um conjunto de agentes de IA que assumem as operações da sua empresa — do financeiro ao atendimento. Você decide a estratégia, a IA executa o resto.">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -19,17 +19,17 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         :root {
-            --black: #0a0a0a;
-            --dark-bg: #111111;
-            --graphite: #1a1a1a;
-            --border: #222222;
+            --black: #00112e;
+            --dark-bg: #001233;
+            --graphite: #001a40;
+            --border: #0d2b5e;
             --text-primary: #ffffff;
-            --text-secondary: #a0a0a0;
-            --text-muted: #707070;
-            --electric-blue: #3b82f6;
-            --neon-purple: #a855f7;
+            --text-secondary: #8eadd4;
+            --text-muted: #4d7ab5;
+            --electric-blue: #1e6fff;
+            --neon-purple: #00c4ff;
             --success: #10b981;
-            --accent-glow: rgba(59, 130, 246, 0.15);
+            --accent-glow: rgba(30, 111, 255, 0.15);
         }
 
         html { scroll-behavior: smooth; }
@@ -52,13 +52,13 @@
         nav {
             position: fixed; top: 0; left: 0; right: 0;
             z-index: 1000; padding: 1.5rem 3rem;
-            background: rgba(10,10,10,0.7);
+            background: rgba(0,18,51,0.75);
             backdrop-filter: blur(20px);
             border-bottom: 1px solid rgba(255,255,255,0.05);
             transition: all 0.3s ease;
         }
         nav.scrolled {
-            background: rgba(10,10,10,0.95);
+            background: rgba(0,18,51,0.97);
             border-bottom: 1px solid rgba(255,255,255,0.1);
         }
         .nav-container {
@@ -81,9 +81,9 @@
             background: linear-gradient(135deg, var(--electric-blue), var(--neon-purple));
             border: none; border-radius: 8px; color: white;
             font-weight: 600; font-size: 0.9rem; cursor: pointer;
-            transition: all 0.3s; box-shadow: 0 4px 20px rgba(59,130,246,0.3);
+            transition: all 0.3s; box-shadow: 0 4px 20px rgba(30,111,255,0.3);
         }
-        .cta-nav:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(59,130,246,0.5); }
+        .cta-nav:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(30,111,255,0.5); }
         .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
         .hamburger span { width: 25px; height: 2px; background: #fff; border-radius: 2px; transition: all 0.3s; }
 
@@ -92,7 +92,7 @@
             position: relative; min-height: 100vh;
             display: flex; align-items: center; justify-content: center;
             overflow: hidden;
-            background: radial-gradient(ellipse at center, rgba(59,130,246,0.05) 0%, transparent 70%);
+            background: radial-gradient(ellipse at center, rgba(30,111,255,0.05) 0%, transparent 70%);
         }
         .hero-content {
             position: relative; z-index: 10;
@@ -101,7 +101,7 @@
         }
         .hero-badge {
             display: inline-block; padding: 0.5rem 1.2rem;
-            background: rgba(59,130,246,0.1); border: 1px solid rgba(59,130,246,0.25);
+            background: rgba(30,111,255,0.1); border: 1px solid rgba(30,111,255,0.25);
             border-radius: 50px; font-size: 0.85rem; font-weight: 500;
             color: var(--electric-blue); margin-bottom: 2rem;
             backdrop-filter: blur(10px);
@@ -111,7 +111,7 @@
             font-size: clamp(2.6rem, 6.5vw, 5.5rem);
             font-weight: 900; line-height: 1.1; letter-spacing: -0.04em;
             margin-bottom: 1.5rem;
-            background: linear-gradient(135deg, #fff 0%, #a0a0a0 100%);
+            background: linear-gradient(135deg, #ffffff 0%, #8eadd4 100%);
             -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
             opacity: 0; animation: fadeInUp 0.8s ease forwards 0.4s;
         }
@@ -135,7 +135,7 @@
             background: linear-gradient(135deg, var(--electric-blue), var(--neon-purple));
             border: none; border-radius: 10px; color: white;
             font-weight: 600; font-size: 1rem; cursor: pointer;
-            transition: all 0.3s; box-shadow: 0 8px 30px rgba(59,130,246,0.4);
+            transition: all 0.3s; box-shadow: 0 8px 30px rgba(30,111,255,0.4);
             position: relative; overflow: hidden;
         }
         .btn-primary::before {
@@ -145,7 +145,7 @@
             transition: left 0.5s;
         }
         .btn-primary:hover::before { left: 100%; }
-        .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 12px 40px rgba(59,130,246,0.6); }
+        .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 12px 40px rgba(30,111,255,0.6); }
         .btn-secondary {
             padding: 1.1rem 2.8rem;
             background: transparent;
@@ -155,8 +155,8 @@
             transition: all 0.3s; backdrop-filter: blur(10px);
         }
         .btn-secondary:hover {
-            border-color: rgba(168,85,247,0.4); color: #fff;
-            background: rgba(168,85,247,0.08);
+            border-color: rgba(0,196,255,0.4); color: #fff;
+            background: rgba(0,196,255,0.08);
         }
         .hero-pills {
             display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-top: 3.5rem;
@@ -205,12 +205,12 @@
         .section-header { text-align: center; margin-bottom: 5rem; }
         .section-badge {
             display: inline-block; padding: 0.5rem 1.2rem;
-            background: rgba(168,85,247,0.1); border: 1px solid rgba(168,85,247,0.2);
+            background: rgba(0,196,255,0.1); border: 1px solid rgba(0,196,255,0.2);
             border-radius: 50px; font-size: 0.85rem; font-weight: 500;
             color: var(--neon-purple); margin-bottom: 1.5rem;
         }
         .section-badge.blue {
-            background: rgba(59,130,246,0.1); border-color: rgba(59,130,246,0.2);
+            background: rgba(30,111,255,0.1); border-color: rgba(30,111,255,0.2);
             color: var(--electric-blue);
         }
         .section-title {
@@ -248,9 +248,9 @@
         }
         .pain-back {
             transform: rotateY(180deg);
-            background: linear-gradient(145deg, rgba(59,130,246,0.1), rgba(168,85,247,0.06));
-            border: 1px solid rgba(59,130,246,0.25);
-            box-shadow: 0 0 40px rgba(59,130,246,0.08) inset,
+            background: linear-gradient(145deg, rgba(30,111,255,0.1), rgba(0,196,255,0.06));
+            border: 1px solid rgba(30,111,255,0.25);
+            box-shadow: 0 0 40px rgba(30,111,255,0.08) inset,
                         0 20px 60px rgba(0,0,0,0.4);
         }
         .pf-icon {
@@ -274,12 +274,12 @@
         }
         .pb-icon {
             font-size: 2.6rem; line-height: 1;
-            filter: drop-shadow(0 0 12px rgba(59,130,246,0.6));
+            filter: drop-shadow(0 0 12px rgba(30,111,255,0.6));
         }
         .pb-result {
             font-size: clamp(2.4rem,4.5vw,3.8rem); font-weight: 900;
             letter-spacing: -0.04em; line-height: 1;
-            background: linear-gradient(135deg, #60a5fa, #a855f7);
+            background: linear-gradient(135deg, #60b0ff, #00c4ff);
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
             background-clip: text;
         }
@@ -309,21 +309,21 @@
             position: absolute; top: 50%; left: 50%;
             transform: translate(-50%,-50%);
             width: 100px; height: 100px; border-radius: 50%;
-            background: radial-gradient(circle, rgba(59,130,246,0.3), rgba(168,85,247,0.15));
-            border: 1px solid rgba(59,130,246,0.4);
+            background: radial-gradient(circle, rgba(30,111,255,0.3), rgba(0,196,255,0.15));
+            border: 1px solid rgba(30,111,255,0.4);
             display: flex; flex-direction: column; align-items: center; justify-content: center;
             z-index: 10;
-            box-shadow: 0 0 40px rgba(59,130,246,0.3), 0 0 80px rgba(168,85,247,0.15),
-                        inset 0 0 20px rgba(59,130,246,0.15);
+            box-shadow: 0 0 40px rgba(30,111,255,0.3), 0 0 80px rgba(0,196,255,0.15),
+                        inset 0 0 20px rgba(30,111,255,0.15);
         }
         .eco-core-pulse {
             position: absolute; inset: -12px; border-radius: 50%;
-            border: 1px solid rgba(59,130,246,0.25);
+            border: 1px solid rgba(30,111,255,0.25);
             animation: corePulse 2.5s ease-in-out infinite;
         }
         .eco-core-pulse2 {
             position: absolute; inset: -26px; border-radius: 50%;
-            border: 1px solid rgba(168,85,247,0.12);
+            border: 1px solid rgba(0,196,255,0.12);
             animation: corePulse 2.5s ease-in-out infinite 0.6s;
         }
         @keyframes corePulse {
@@ -355,8 +355,8 @@
             animation: nodeFloat var(--float-dur, 3s) ease-in-out infinite var(--float-delay, 0s);
         }
         .eco-node:hover {
-            border-color: rgba(59,130,246,0.4); color: white;
-            box-shadow: 0 8px 30px rgba(59,130,246,0.2);
+            border-color: rgba(30,111,255,0.4); color: white;
+            box-shadow: 0 8px 30px rgba(30,111,255,0.2);
         }
         @keyframes nodeFloat {
             0%,100% { transform: translate(calc(var(--nx) - 55px), calc(var(--ny) - 21px)) translateY(0); }
@@ -403,7 +403,7 @@
             background: linear-gradient(135deg, var(--electric-blue), var(--neon-purple));
             border-radius: 50%; display: flex; align-items: center;
             justify-content: center; font-size: 1.3rem; font-weight: 800;
-            margin: 0 auto 1.2rem; box-shadow: 0 10px 30px rgba(59,130,246,0.4);
+            margin: 0 auto 1.2rem; box-shadow: 0 10px 30px rgba(30,111,255,0.4);
         }
         .flow-step h4 { font-size: 1.1rem; font-weight: 700; margin-bottom: 0.6rem; }
         .flow-step p { color: var(--text-secondary); font-size: 0.88rem; line-height: 1.6; }
@@ -422,7 +422,7 @@
         }
         .custom-visual::before {
             content: ''; position: absolute; inset: 0;
-            background: radial-gradient(circle at 30% 30%, rgba(168,85,247,0.1), transparent 60%);
+            background: radial-gradient(circle at 30% 30%, rgba(0,196,255,0.1), transparent 60%);
         }
         .custom-item {
             display: flex; gap: 1.2rem; align-items: flex-start;
@@ -434,7 +434,7 @@
             background: linear-gradient(135deg, var(--electric-blue), var(--neon-purple));
             border-radius: 12px; display: flex; align-items: center;
             justify-content: center; font-size: 1.4rem;
-            box-shadow: 0 8px 24px rgba(59,130,246,0.3);
+            box-shadow: 0 8px 24px rgba(30,111,255,0.3);
         }
         .custom-item h4 { font-size: 1.1rem; font-weight: 700; margin-bottom: 0.4rem; }
         .custom-item p { color: var(--text-secondary); font-size: 0.92rem; line-height: 1.6; }
@@ -448,7 +448,7 @@
         }
         .integration-tag {
             padding: 0.4rem 0.9rem;
-            background: rgba(59,130,246,0.08); border: 1px solid rgba(59,130,246,0.15);
+            background: rgba(30,111,255,0.08); border: 1px solid rgba(30,111,255,0.15);
             border-radius: 50px; font-size: 0.82rem; color: var(--text-secondary);
         }
 
@@ -468,12 +468,12 @@
         }
         .metric-card::before {
             content: ''; position: absolute; inset: 0;
-            background: radial-gradient(circle at 50% 0%, var(--card-glow,rgba(59,130,246,0.08)), transparent 65%);
+            background: radial-gradient(circle at 50% 0%, var(--card-glow,rgba(30,111,255,0.08)), transparent 65%);
             transition: opacity 0.4s; opacity: 0.6;
         }
         .metric-card:hover {
-            border-color: rgba(59,130,246,0.25);
-            box-shadow: 0 24px 70px rgba(59,130,246,0.15);
+            border-color: rgba(30,111,255,0.25);
+            box-shadow: 0 24px 70px rgba(30,111,255,0.15);
         }
         .metric-card:hover::before { opacity: 1; }
         .metric-emoji {
@@ -553,8 +553,8 @@
         .form-group input:focus,
         .form-group select:focus,
         .form-group textarea:focus {
-            border-color: rgba(59,130,246,0.4);
-            background: rgba(59,130,246,0.04);
+            border-color: rgba(30,111,255,0.4);
+            background: rgba(30,111,255,0.04);
         }
         .form-group select option { background: #1a1a1a; }
         .form-group textarea { resize: vertical; min-height: 100px; }
@@ -563,9 +563,9 @@
             background: linear-gradient(135deg, var(--electric-blue), var(--neon-purple));
             border: none; border-radius: 12px; color: white;
             font-weight: 700; font-size: 1rem; cursor: pointer;
-            transition: all 0.3s; box-shadow: 0 8px 30px rgba(59,130,246,0.4);
+            transition: all 0.3s; box-shadow: 0 8px 30px rgba(30,111,255,0.4);
         }
-        .form-submit:hover { transform: translateY(-2px); box-shadow: 0 12px 40px rgba(59,130,246,0.6); }
+        .form-submit:hover { transform: translateY(-2px); box-shadow: 0 12px 40px rgba(30,111,255,0.6); }
         .form-success {
             display: none; text-align: center; padding: 3rem;
         }
@@ -675,7 +675,7 @@
             border-radius: 10px; padding: 0.6rem 1rem; color: white;
             font-family: inherit; font-size: 0.88rem; outline: none;
         }
-        .admin-search:focus { border-color: rgba(59,130,246,0.4); }
+        .admin-search:focus { border-color: rgba(30,111,255,0.4); }
         .admin-filter-group { display: flex; align-items: center; gap: 0.4rem; }
         .admin-period-btn {
             padding: 0.45rem 0.8rem; border-radius: 8px; font-size: 0.78rem; font-weight: 600;
@@ -683,7 +683,7 @@
             color: var(--text-muted); cursor: pointer; transition: all 0.2s;
         }
         .admin-period-btn.active, .admin-period-btn:hover {
-            background: rgba(59,130,246,0.15); border-color: rgba(59,130,246,0.3); color: var(--electric-blue);
+            background: rgba(30,111,255,0.15); border-color: rgba(30,111,255,0.3); color: var(--electric-blue);
         }
         .admin-select {
             background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.09);
@@ -693,10 +693,10 @@
         .admin-select option { background: #1a1a1a; }
         .admin-export-btn {
             padding: 0.5rem 1rem; border-radius: 10px; font-size: 0.82rem; font-weight: 600;
-            background: rgba(168,85,247,0.12); border: 1px solid rgba(168,85,247,0.25);
+            background: rgba(0,196,255,0.12); border: 1px solid rgba(0,196,255,0.25);
             color: var(--neon-purple); cursor: pointer; transition: all 0.2s; white-space: nowrap;
         }
-        .admin-export-btn:hover { background: rgba(168,85,247,0.2); }
+        .admin-export-btn:hover { background: rgba(0,196,255,0.2); }
         .admin-leads-count {
             font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.8rem;
             padding-left: 0.2rem;
@@ -749,10 +749,10 @@
         .lead-source-badge {
             display: inline-block; padding: 0.22rem 0.65rem; border-radius: 50px;
             font-size: 0.7rem; font-weight: 600; letter-spacing: 0.04em;
-            background: rgba(59,130,246,0.1); border: 1px solid rgba(59,130,246,0.2);
+            background: rgba(30,111,255,0.1); border: 1px solid rgba(30,111,255,0.2);
             color: var(--electric-blue);
         }
-        .lead-source-badge.modal { background: rgba(168,85,247,0.1); border-color: rgba(168,85,247,0.2); color: var(--neon-purple); }
+        .lead-source-badge.modal { background: rgba(0,196,255,0.1); border-color: rgba(0,196,255,0.2); color: var(--neon-purple); }
         .lead-status-select {
             background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
             border-radius: 8px; padding: 0.3rem 0.6rem; color: var(--text-secondary);
@@ -796,8 +796,8 @@
             position: fixed; border-radius: 50%;
             filter: blur(120px); pointer-events: none; z-index: 0;
         }
-        .glow-blue { width: 600px; height: 600px; background: rgba(59,130,246,0.06); top: 10%; left: -15%; }
-        .glow-purple { width: 500px; height: 500px; background: rgba(168,85,247,0.05); bottom: 20%; right: -10%; }
+        .glow-blue { width: 600px; height: 600px; background: rgba(30,111,255,0.08); top: 10%; left: -15%; }
+        .glow-purple { width: 500px; height: 500px; background: rgba(0,196,255,0.05); bottom: 20%; right: -10%; }
 
         /* RESPONSIVE */
         @media (max-width: 1024px) {
@@ -810,7 +810,7 @@
             nav.menu-open .nav-links {
                 display: flex; flex-direction: column;
                 position: absolute; top: 100%; left: 0; right: 0;
-                background: rgba(10,10,10,0.98); padding: 1.5rem;
+                background: rgba(0,18,51,0.98); padding: 1.5rem;
                 border-bottom: 1px solid rgba(255,255,255,0.08); gap: 1.2rem;
             }
             .stats-container { grid-template-columns: repeat(2, 1fr); }
@@ -841,16 +841,16 @@
             display: inline-flex;
             border-radius: 12px;
             padding: 1.5px;
-            background: linear-gradient(to bottom, #050505, #5b21b6);
+            background: linear-gradient(to bottom, #001233, #003399);
             transform-origin: center;
             transition: transform 250ms cubic-bezier(0.1,0.4,0.2,1),
                         box-shadow  250ms cubic-bezier(0.1,0.4,0.2,1);
-            box-shadow: 0 3px 8px rgba(0,0,0,0.5), 0 0 18px rgba(59,130,246,0.08);
+            box-shadow: 0 3px 8px rgba(0,0,0,0.5), 0 0 18px rgba(30,111,255,0.08);
             cursor: pointer;
             text-decoration: none;
         }
         .nv-metal-wrap:hover {
-            box-shadow: 0 6px 22px rgba(59,130,246,0.4), 0 0 28px rgba(168,85,247,0.18);
+            box-shadow: 0 6px 22px rgba(30,111,255,0.4), 0 0 28px rgba(0,196,255,0.18);
         }
         .nv-metal-wrap.pressed {
             transform: translateY(2.5px) scale(0.99) !important;
@@ -860,7 +860,7 @@
             position: absolute;
             inset: 1px;
             border-radius: 11px;
-            background: linear-gradient(to bottom, #93c5fd 0%, #4c1d95 50%, #c4b5fd 100%);
+            background: linear-gradient(to bottom, #80c8ff 0%, #002266 50%, #80d4ff 100%);
             transition: filter 250ms cubic-bezier(0.1,0.4,0.2,1);
             pointer-events: none;
         }
@@ -879,7 +879,7 @@
             font-size: 1rem;
             font-weight: 600;
             color: white;
-            background: linear-gradient(to bottom, #60a5fa, #7c3aed);
+            background: linear-gradient(to bottom, #60b0ff, #0044cc);
             text-shadow: 0 -1px 0 rgba(30,58,138,0.9);
             transition: transform 250ms cubic-bezier(0.1,0.4,0.2,1),
                         filter  250ms cubic-bezier(0.1,0.4,0.2,1);
@@ -940,18 +940,18 @@
                 inset  1px  1px 1px -0.5px rgba(255,255,255,0.12),
                 inset -1px -1px 1px -0.5px rgba(255,255,255,0.06),
                 inset  0    0   8px  4px   rgba(255,255,255,0.03),
-                0 0 14px rgba(168,85,247,0.06);
+                0 0 14px rgba(0,196,255,0.06);
         }
         .nv-liquid-btn:hover {
             color: white;
-            border-color: rgba(168,85,247,0.45);
+            border-color: rgba(0,196,255,0.45);
             transform: scale(1.03);
             box-shadow:
                 0 4px 14px rgba(0,0,0,0.22),
                 inset  1px  1px 1px -0.5px rgba(255,255,255,0.18),
                 inset -1px -1px 1px -0.5px rgba(255,255,255,0.1),
-                inset  0    0   8px  4px   rgba(168,85,247,0.05),
-                0 0 24px rgba(168,85,247,0.18);
+                inset  0    0   8px  4px   rgba(0,196,255,0.05),
+                0 0 24px rgba(0,196,255,0.18);
         }
         .nv-liquid-btn:active { transform: scale(0.98); }
         .nv-liquid-distort {
@@ -992,13 +992,30 @@
     <!-- NAV -->
     <nav id="nav">
         <div class="nav-container">
-            <div class="logo">Novera Digital</div>
+            <div class="logo" style="display:flex;align-items:center;gap:10px;">
+                <svg width="34" height="34" viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="34" height="34" rx="7" fill="#001233"/>
+                    <rect width="34" height="34" rx="7" fill="url(#logo-glow)" opacity="0.4"/>
+                    <path d="M8 26V8L17 21.5V8L26 26" stroke="white" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <ellipse cx="17" cy="17" rx="2.5" ry="2.5" fill="#00c4ff" opacity="0.9" filter="url(#f-blur)"/>
+                    <defs>
+                        <radialGradient id="logo-glow" cx="50%" cy="50%" r="50%">
+                            <stop offset="0%" stop-color="#1e6fff" stop-opacity="0.3"/>
+                            <stop offset="100%" stop-color="#001233" stop-opacity="0"/>
+                        </radialGradient>
+                        <filter id="f-blur" x="-100%" y="-100%" width="300%" height="300%">
+                            <feGaussianBlur stdDeviation="2"/>
+                        </filter>
+                    </defs>
+                </svg>
+                <span>Novera OS</span>
+            </div>
             <ul class="nav-links" id="navLinks">
-                <li><a href="#automacoes">Automações</a></li>
+                <li><a href="#automacoes">Agentes</a></li>
                 <li><a href="#personalizado">Personalizado</a></li>
-                <li><a href="#depoimentos">Cases</a></li>
+                <li><a href="#depoimentos">Resultados</a></li>
             </ul>
-            <button class="cta-nav" onclick="scrollToSection('diagnostico')">Diagnóstico Gratuito</button>
+            <button class="cta-nav" onclick="scrollToSection('diagnostico')">Solicitar Demo</button>
             <div class="hamburger" id="hamburger" onclick="toggleMenu()">
                 <span></span><span></span><span></span>
             </div>
@@ -1008,9 +1025,9 @@
     <!-- HERO -->
     <section class="hero">
         <div class="hero-content">
-            <div class="hero-badge">✦ Automações para Clínicas de Saúde</div>
-            <h1>Sua clínica no<br><span class="gradient-text">piloto automático.</span></h1>
-            <p>Você foca nos pacientes, a IA cuida do resto. Reduza faltas, automatize agendamentos e transforme o fluxo da sua clínica com automações prontas para ativar hoje.</p>
+            <div class="hero-badge">✦ Novera OS · Em Lançamento</div>
+            <h1>Sua empresa gerida por<br><span class="gradient-text">agentes de IA.</span></h1>
+            <p>Um conjunto de agentes especializados que assume as operações do seu negócio — financeiro, vendas, RH, atendimento e muito mais. Você define a estratégia, a IA executa o resto.</p>
             <div class="hero-cta">
                 <!-- MetalButton primário -->
                 <div class="nv-metal-wrap">
@@ -1018,19 +1035,19 @@
                     <button class="nv-metal-face" onclick="scrollToSection('automacoes')">
                         <div class="nv-metal-shine"></div>
                         <div class="nv-metal-hover-glow"></div>
-                        Ver Automações Disponíveis
+                        Conhecer os Agentes
                     </button>
                 </div>
                 <!-- LiquidButton secundário -->
                 <button class="nv-liquid-btn" onclick="openDiagnosticModal()">
                     <div class="nv-liquid-distort"></div>
-                    <span class="nv-liquid-text">Quero Algo Personalizado</span>
+                    <span class="nv-liquid-text">Quero uma Demo</span>
                 </button>
             </div>
             <div class="hero-pills">
-                <div class="hero-pill"><span>✓</span> Sem programação</div>
-                <div class="hero-pill"><span>✓</span> Ativo em até 48h</div>
-                <div class="hero-pill"><span>✓</span> Integra com WhatsApp</div>
+                <div class="hero-pill"><span>✓</span> Múltiplos setores</div>
+                <div class="hero-pill"><span>✓</span> Ativo em até 7 dias</div>
+                <div class="hero-pill"><span>✓</span> Integra com seus sistemas</div>
                 <div class="hero-pill"><span>✓</span> Suporte dedicado</div>
             </div>
         </div>
@@ -1040,19 +1057,19 @@
     <div class="stats-bar">
         <div class="stats-container">
             <div class="stat-item">
-                <h3>-60%</h3>
-                <p>redução média de faltas</p>
+                <h3>80%+</h3>
+                <p>de tarefas operacionais eliminadas</p>
             </div>
             <div class="stat-item">
-                <h3>3h+</h3>
-                <p>economizadas por dia</p>
+                <h3>6+</h3>
+                <p>agentes especializados no seu negócio</p>
             </div>
             <div class="stat-item">
                 <h3>24/7</h3>
-                <p>agendamentos automáticos</p>
+                <p>operação autônoma</p>
             </div>
             <div class="stat-item">
-                <h3>48h</h3>
+                <h3>7 dias</h3>
                 <p>para entrar no ar</p>
             </div>
         </div>
@@ -1061,9 +1078,9 @@
     <!-- AUTOMAÇÕES -->
     <section id="automacoes">
         <div class="section-header">
-            <div class="section-badge">💸 O Custo da Inação</div>
-            <h2 class="section-title">Sua clínica perde dinheiro<br>todos os dias <span class="gradient-text">nos mesmos lugares</span></h2>
-            <p class="section-description">Passe o mouse nos cards para ver o que muda com automação. Cada problema abaixo tem uma solução que entra no ar em 48 horas.</p>
+            <div class="section-badge">⚡ O Custo da Inação</div>
+            <h2 class="section-title">Sua empresa perde performance<br>todos os dias <span class="gradient-text">nos mesmos pontos</span></h2>
+            <p class="section-description">Passe o mouse nos cards para ver o que muda com os agentes de IA. Cada problema abaixo tem uma solução que entra no ar em até 7 dias.</p>
         </div>
 
         <!-- 3 FLIP CARDS -->
@@ -1074,20 +1091,20 @@
                     <div class="pain-front">
                         <div class="pf-icon">📉</div>
                         <div>
-                            <div class="pf-stat">30%</div>
-                            <div class="pf-label">das consultas viram faltas</div>
-                            <div class="pf-desc">Cada falta é uma consulta paga, um horário bloqueado e uma vaga desperdiçada. Em uma clínica com 20 consultas por dia, isso é R$ 1.800+ jogados fora toda semana.</div>
+                            <div class="pf-stat">70%</div>
+                            <div class="pf-label">do tempo da equipe em operacional</div>
+                            <div class="pf-desc">Tarefas repetitivas consomem a maior parte do dia dos seus colaboradores. Cada hora gasta em processos manuais é uma hora a menos em estratégia, inovação e crescimento real.</div>
                         </div>
                         <div class="pf-hint">↑ passe o mouse para ver a solução</div>
                     </div>
                     <div class="pain-back">
-                        <div class="pb-icon">📱</div>
+                        <div class="pb-icon">🤖</div>
                         <div>
-                            <div class="pb-result">−60%</div>
-                            <div class="pb-label">de faltas em 30 dias</div>
-                            <div class="pb-desc">Lembretes automáticos 48h e 2h antes, com confirmação em 1 clique. Quem não confirmar libera o horário para outro paciente — tudo sem intervenção humana.</div>
+                            <div class="pb-result">−70%</div>
+                            <div class="pb-label">em tarefas operacionais</div>
+                            <div class="pb-desc">Agentes de IA assumem rotinas como relatórios, cobranças, agendamentos e respostas. Sua equipe foca no que só humanos fazem bem.</div>
                         </div>
-                        <div class="pb-tag">✓ Redutor de Faltas</div>
+                        <div class="pb-tag">✓ Agentes Operacionais</div>
                     </div>
                 </div>
             </div>
@@ -1098,19 +1115,19 @@
                         <div class="pf-icon">😤</div>
                         <div>
                             <div class="pf-stat">3h</div>
-                            <div class="pf-label">por dia em mensagens de WhatsApp</div>
-                            <div class="pf-desc">Sua secretária não foi contratada para ser robô de agendamento. Cada hora perdida respondendo "qual horário tem?" é uma hora a menos de atenção real ao paciente.</div>
+                            <div class="pf-label">perdidas por dia em decisões sem dados</div>
+                            <div class="pf-desc">Informação descentralizada, planilhas desatualizadas e sistemas que não conversam. Cada decisão exige horas de consolidação manual de dados.</div>
                         </div>
                         <div class="pf-hint">↑ passe o mouse para ver a solução</div>
                     </div>
                     <div class="pain-back">
-                        <div class="pb-icon">🤖</div>
+                        <div class="pb-icon">📊</div>
                         <div>
-                            <div class="pb-result">24/7</div>
-                            <div class="pb-label">agendamento sem atendente</div>
-                            <div class="pb-desc">Um agente de IA responde, verifica disponibilidade, agenda e confirma. Opera de madrugada, fim de semana e feriado. Sua equipe foca em quem está na sala de espera.</div>
+                            <div class="pb-result">Real-time</div>
+                            <div class="pb-label">visibilidade de todos os setores</div>
+                            <div class="pb-desc">Um painel unificado conecta financeiro, vendas, RH e operações em tempo real. Decida com dados, não com intuição.</div>
                         </div>
-                        <div class="pb-tag">✓ Agente de Agendamento</div>
+                        <div class="pb-tag">✓ Inteligência de Negócio</div>
                     </div>
                 </div>
             </div>
@@ -1120,20 +1137,20 @@
                     <div class="pain-front">
                         <div class="pf-icon">👻</div>
                         <div>
-                            <div class="pf-stat">1/3</div>
-                            <div class="pf-label">dos pacientes nunca volta</div>
-                            <div class="pf-desc">Sem follow-up, o paciente esquece. Sem lembretes de retorno, a receita recorrente some. Sem pedido de avaliação, o Google Meu Negócio fica parado.</div>
+                            <div class="pf-stat">3×</div>
+                            <div class="pf-label">mais caro operar sem automação</div>
+                            <div class="pf-desc">Sem processos automatizados, você paga mais por mão de obra repetitiva, erra mais e escala menos. O custo invisível do manual cresce com a empresa.</div>
                         </div>
                         <div class="pf-hint">↑ passe o mouse para ver a solução</div>
                     </div>
                     <div class="pain-back">
                         <div class="pb-icon">⭐</div>
                         <div>
-                            <div class="pb-result">+40%</div>
-                            <div class="pb-label">de taxa de retorno</div>
-                            <div class="pb-desc">Follow-up pós-consulta, régua de reativação e solicitação de avaliação no momento certo. Sua clínica continua presente na vida do paciente sem você fazer nada.</div>
+                            <div class="pb-result">+35%</div>
+                            <div class="pb-label">de eficiência operacional</div>
+                            <div class="pb-desc">Processos padronizados e automatizados reduzem erros, aceleram entregas e liberam budget para crescimento. A IA não tira folga, não comete erros de digitação.</div>
                         </div>
-                        <div class="pb-tag">✓ Follow-up + Avaliações</div>
+                        <div class="pb-tag">✓ Eficiência + Escala</div>
                     </div>
                 </div>
             </div>
@@ -1142,16 +1159,16 @@
 
         <!-- ECOSYSTEM 3D -->
         <div class="eco-wrapper">
-            <div class="eco-title">O que automatizamos para sua clínica</div>
+            <div class="eco-title">O que o Novera OS gerencia para você</div>
             <div class="eco-scene" id="ecoScene">
                 <!-- SVG connection lines -->
                 <svg class="eco-svg" viewBox="0 0 540 540">
-                    <line class="eco-line" x1="270" y1="270" x2="410" y2="270" stroke="rgba(59,130,246,0.15)" stroke-width="1" stroke-dasharray="4 4"/>
-                    <line class="eco-line" x1="270" y1="270" x2="340" y2="401" stroke="rgba(168,85,247,0.15)" stroke-width="1" stroke-dasharray="4 4"/>
-                    <line class="eco-line" x1="270" y1="270" x2="130" y2="401" stroke="rgba(59,130,246,0.12)" stroke-width="1" stroke-dasharray="4 4"/>
-                    <line class="eco-line" x1="270" y1="270" x2="130" y2="139" stroke="rgba(168,85,247,0.12)" stroke-width="1" stroke-dasharray="4 4"/>
-                    <line class="eco-line" x1="270" y1="270" x2="270" y2="95"  stroke="rgba(59,130,246,0.1)"  stroke-width="1" stroke-dasharray="4 4"/>
-                    <line class="eco-line" x1="270" y1="270" x2="410" y2="139" stroke="rgba(168,85,247,0.1)"  stroke-width="1" stroke-dasharray="4 4"/>
+                    <line class="eco-line" x1="270" y1="270" x2="410" y2="270" stroke="rgba(30,111,255,0.15)" stroke-width="1" stroke-dasharray="4 4"/>
+                    <line class="eco-line" x1="270" y1="270" x2="340" y2="401" stroke="rgba(0,196,255,0.15)" stroke-width="1" stroke-dasharray="4 4"/>
+                    <line class="eco-line" x1="270" y1="270" x2="130" y2="401" stroke="rgba(30,111,255,0.12)" stroke-width="1" stroke-dasharray="4 4"/>
+                    <line class="eco-line" x1="270" y1="270" x2="130" y2="139" stroke="rgba(0,196,255,0.12)" stroke-width="1" stroke-dasharray="4 4"/>
+                    <line class="eco-line" x1="270" y1="270" x2="270" y2="95"  stroke="rgba(30,111,255,0.1)"  stroke-width="1" stroke-dasharray="4 4"/>
+                    <line class="eco-line" x1="270" y1="270" x2="410" y2="139" stroke="rgba(0,196,255,0.1)"  stroke-width="1" stroke-dasharray="4 4"/>
                 </svg>
                 <!-- Orbit rings -->
                 <div class="orbit-ring orbit-ring-1"></div>
@@ -1161,15 +1178,15 @@
                     <div class="eco-core-pulse"></div>
                     <div class="eco-core-pulse2"></div>
                     <div class="eco-core-emoji">🧠</div>
-                    <div class="eco-core-label">Novera IA</div>
+                    <div class="eco-core-label">Novera OS</div>
                 </div>
                 <!-- 6 Nodes — positions via --nx/--ny -->
-                <div class="eco-node" style="--nx:140px;--ny:-1px;--float-dur:3.2s;--float-delay:0s">🤖 Agendamento</div>
-                <div class="eco-node" style="--nx:68px;--ny:121px;--float-dur:3.8s;--float-delay:0.4s">📱 Faltas</div>
-                <div class="eco-node" style="--nx:-68px;--ny:121px;--float-dur:3.5s;--float-delay:0.8s">💬 Follow-up</div>
-                <div class="eco-node" style="--nx:-140px;--ny:-1px;--float-dur:4s;--float-delay:0.2s">💰 Cobrança</div>
-                <div class="eco-node" style="--nx:-68px;--ny:-123px;--float-dur:3.3s;--float-delay:0.6s">⭐ Avaliações</div>
-                <div class="eco-node" style="--nx:68px;--ny:-123px;--float-dur:3.6s;--float-delay:1s">📊 Relatório</div>
+                <div class="eco-node" style="--nx:140px;--ny:-1px;--float-dur:3.2s;--float-delay:0s">💰 Financeiro</div>
+                <div class="eco-node" style="--nx:68px;--ny:121px;--float-dur:3.8s;--float-delay:0.4s">📈 Vendas</div>
+                <div class="eco-node" style="--nx:-68px;--ny:121px;--float-dur:3.5s;--float-delay:0.8s">👥 RH</div>
+                <div class="eco-node" style="--nx:-140px;--ny:-1px;--float-dur:4s;--float-delay:0.2s">📣 Marketing</div>
+                <div class="eco-node" style="--nx:-68px;--ny:-123px;--float-dur:3.3s;--float-delay:0.6s">💬 Atendimento</div>
+                <div class="eco-node" style="--nx:68px;--ny:-123px;--float-dur:3.6s;--float-delay:1s">⚙️ Operações</div>
             </div>
         </div>
 
@@ -1179,7 +1196,7 @@
                 <button class="nv-metal-face" onclick="scrollToSection('diagnostico')">
                     <div class="nv-metal-shine"></div>
                     <div class="nv-metal-hover-glow"></div>
-                    Quero automatizar minha clínica →
+                    Quero automatizar meu negócio →
                 </button>
             </div>
         </div>
@@ -1189,28 +1206,28 @@
     <section class="how-section">
         <div class="section-header">
             <div class="section-badge blue">🔄 Como Funciona</div>
-            <h2 class="section-title">De zero ao <span class="gradient-text">piloto automático</span><br>em 3 passos</h2>
+            <h2 class="section-title">De zero à <span class="gradient-text">gestão autônoma</span><br>em 4 passos</h2>
         </div>
         <div class="steps-flow">
             <div class="flow-step">
                 <div class="flow-number">1</div>
-                <h4>Você escolhe</h4>
-                <p>Seleciona a automação ideal para o problema mais urgente da sua clínica neste momento.</p>
+                <h4>Você mostra</h4>
+                <p>Apresenta os processos do seu negócio no diagnóstico gratuito. Mapeamos cada gargalo operacional.</p>
             </div>
             <div class="flow-step">
                 <div class="flow-number">2</div>
                 <h4>A gente configura</h4>
-                <p>Nossa equipe integra tudo com seu WhatsApp Business e agenda em até 48 horas, sem você precisar fazer nada técnico.</p>
+                <p>Integramos os agentes com seus sistemas em até 7 dias, sem você precisar fazer nada técnico.</p>
             </div>
             <div class="flow-step">
                 <div class="flow-number">3</div>
-                <h4>A clínica trabalha sozinha</h4>
-                <p>Agendamentos, lembretes, cobranças e avaliações acontecem automaticamente. Você só acompanha os resultados.</p>
+                <h4>O negócio opera sozinho</h4>
+                <p>Financeiro, vendas, atendimento e operações acontecem automaticamente. Você acompanha pelo painel.</p>
             </div>
             <div class="flow-step">
                 <div class="flow-number">4</div>
                 <h4>Você escala</h4>
-                <p>Adiciona novas automações conforme sua clínica cresce, sem retrabalho e com suporte dedicado sempre à disposição.</p>
+                <p>Adiciona novos agentes conforme o negócio cresce, sem retrabalho e com suporte dedicado sempre à disposição.</p>
             </div>
         </div>
     </section>
@@ -1220,17 +1237,17 @@
         <div class="custom-container">
             <div class="custom-content">
                 <div class="section-badge" style="display:inline-block; margin-bottom:1.5rem;">🛠️ Sob Medida</div>
-                <h3>Sua clínica tem processos únicos.<br>A gente <span class="gradient-text">constrói pra você.</span></h3>
-                <p>Para clínicas com fluxos específicos, sistemas proprietários ou necessidades que vão além das automações prontas, desenvolvemos soluções completamente personalizadas.</p>
+                <h3>Seu negócio tem processos únicos.<br>A gente <span class="gradient-text">constrói pra você.</span></h3>
+                <p>Para empresas com fluxos específicos, sistemas proprietários ou necessidades que vão além dos agentes prontos, desenvolvemos soluções completamente personalizadas.</p>
                 <p>Começa com um diagnóstico gratuito do seu processo atual, sem compromisso.</p>
                 <div class="integrations-list">
-                    <span class="integration-tag">Doctoralia</span>
-                    <span class="integration-tag">iClinic</span>
-                    <span class="integration-tag">Google Calendar</span>
+                    <span class="integration-tag">ERP</span>
+                    <span class="integration-tag">CRM</span>
+                    <span class="integration-tag">Google Workspace</span>
                     <span class="integration-tag">WhatsApp Business</span>
-                    <span class="integration-tag">Hotmart</span>
+                    <span class="integration-tag">Slack</span>
                     <span class="integration-tag">Notion</span>
-                    <span class="integration-tag">Planilhas Google</span>
+                    <span class="integration-tag">Power BI</span>
                     <span class="integration-tag">Qualquer sistema com API</span>
                 </div>
                 <div class="nv-metal-wrap" style="margin-top:0.5rem">
@@ -1247,21 +1264,21 @@
                     <div class="custom-item-icon">🔍</div>
                     <div>
                         <h4>Diagnóstico do processo atual</h4>
-                        <p>Mapeamos cada etapa do seu atendimento para identificar onde a automação vai gerar mais resultado.</p>
+                        <p>Mapeamos cada etapa das operações para identificar onde a IA vai gerar mais resultado no seu negócio.</p>
                     </div>
                 </div>
                 <div class="custom-item">
                     <div class="custom-item-icon">✏️</div>
                     <div>
-                        <h4>Automação desenhada sob medida</h4>
-                        <p>Desenvolvemos o fluxo ideal para o seu modelo de clínica, não um template genérico.</p>
+                        <h4>Agentes desenhados sob medida</h4>
+                        <p>Desenvolvemos o fluxo ideal para o seu modelo de negócio, não um template genérico.</p>
                     </div>
                 </div>
                 <div class="custom-item">
                     <div class="custom-item-icon">🔗</div>
                     <div>
                         <h4>Integração com qualquer sistema</h4>
-                        <p>Conectamos com Doctoralia, iClinic, Google Calendar, WhatsApp Business e qualquer sistema que você já use.</p>
+                        <p>Conectamos com ERP, CRM, WhatsApp Business, Google Workspace e qualquer sistema que você já use.</p>
                     </div>
                 </div>
                 <div class="custom-item">
@@ -1279,63 +1296,63 @@
     <section id="depoimentos">
         <div class="section-header">
             <div class="section-badge">📊 Impacto Real</div>
-            <h2 class="section-title">O que muda quando sua clínica<br><span class="gradient-text">para de operar no manual</span></h2>
-            <p class="section-description">Números do mercado de saúde digital. Clínicas que automatizam processos repetitivos liberam tempo, aumentam receita e entregam melhor experiência ao paciente.</p>
+            <h2 class="section-title">O que muda quando sua empresa<br><span class="gradient-text">para de operar no manual</span></h2>
+            <p class="section-description">Números de empresas que implementaram agentes de IA. Negócios que automatizam processos repetitivos liberam tempo, reduzem custos e escalam com mais eficiência.</p>
         </div>
 
         <div class="metrics-grid">
 
             <div class="metric-card" style="--card-glow:rgba(239,68,68,0.08)">
-                <span class="metric-emoji">📉</span>
-                <div class="metric-number" data-target="60" data-prefix="-" data-suffix="%">0</div>
-                <div class="metric-label">redução de faltas</div>
-                <div class="metric-context">Clínicas com lembrete automático reduzem no-shows à metade no primeiro mês de uso.</div>
+                <span class="metric-emoji">⚡</span>
+                <div class="metric-number" data-target="80" data-prefix="-" data-suffix="%">0</div>
+                <div class="metric-label">tarefas repetitivas</div>
+                <div class="metric-context">Empresas que implementam agentes de IA eliminam a maior parte do trabalho manual em 30 dias.</div>
             </div>
 
-            <div class="metric-card" style="--card-glow:rgba(59,130,246,0.1)">
+            <div class="metric-card" style="--card-glow:rgba(30,111,255,0.1)">
                 <span class="metric-emoji">⏰</span>
-                <div class="metric-number" data-target="3" data-prefix="+" data-suffix="h">0</div>
-                <div class="metric-label">livres por dia</div>
-                <div class="metric-context">Horas devolvidas à equipe ao eliminar agendamento manual via WhatsApp. Tempo para o que importa.</div>
+                <div class="metric-number" data-target="5" data-prefix="+" data-suffix="h">0</div>
+                <div class="metric-label">livres por colaborador/dia</div>
+                <div class="metric-context">Horas devolvidas à equipe ao eliminar processos manuais. Tempo para crescimento real.</div>
             </div>
 
-            <div class="metric-card" style="--card-glow:rgba(168,85,247,0.1)">
+            <div class="metric-card" style="--card-glow:rgba(0,196,255,0.1)">
                 <span class="metric-emoji">🤖</span>
                 <div class="metric-number" data-target="24" data-prefix="" data-suffix="/7">0</div>
-                <div class="metric-label">disponível para pacientes</div>
-                <div class="metric-context">O agente de IA não dorme, não tira folga e não fica doente. Atende no domingo à meia-noite.</div>
+                <div class="metric-label">operação autônoma</div>
+                <div class="metric-context">Agentes não dormem, não tiram folga e não cometem erros de digitação. Operam a qualquer hora.</div>
             </div>
 
             <div class="metric-card" style="--card-glow:rgba(16,185,129,0.08)">
                 <span class="metric-emoji">⚡</span>
-                <div class="metric-number" data-target="48" data-prefix="" data-suffix="h">0</div>
+                <div class="metric-number" data-target="7" data-prefix="" data-suffix=" dias">0</div>
                 <div class="metric-label">para entrar no ar</div>
-                <div class="metric-context">Da conversa inicial à automação funcionando. Sem semanas de espera, sem burocracia técnica.</div>
+                <div class="metric-context">Da conversa inicial ao negócio operando com IA. Sem semanas de espera, sem burocracia técnica.</div>
             </div>
 
             <div class="metric-card" style="--card-glow:rgba(245,158,11,0.08)">
-                <span class="metric-emoji">⭐</span>
-                <div class="metric-number" data-target="40" data-prefix="+" data-suffix="%">0</div>
-                <div class="metric-label">mais retorno de pacientes</div>
-                <div class="metric-context">Follow-up pós-consulta e régua de reativação aumentam significativamente a taxa de retorno.</div>
+                <span class="metric-emoji">📈</span>
+                <div class="metric-number" data-target="35" data-prefix="+" data-suffix="%">0</div>
+                <div class="metric-label">eficiência operacional</div>
+                <div class="metric-context">Processos padronizados e automatizados reduzem erros e aceleram entregas em todos os setores.</div>
             </div>
 
-            <div class="metric-card" style="--card-glow:rgba(59,130,246,0.08)">
-                <span class="metric-emoji">📈</span>
-                <div class="metric-number" data-target="4.8" data-prefix="" data-suffix="★">0</div>
-                <div class="metric-label">média no Google</div>
-                <div class="metric-context">Clínicas com gerador de avaliações atingem notas acima de 4.7 em até 90 dias de uso contínuo.</div>
+            <div class="metric-card" style="--card-glow:rgba(30,111,255,0.08)">
+                <span class="metric-emoji">💎</span>
+                <div class="metric-number" data-target="98" data-prefix="" data-suffix="%">0</div>
+                <div class="metric-label">precisão nos dados</div>
+                <div class="metric-context">Agentes treinados no seu negócio eliminam erros humanos em relatórios, cobranças e registros.</div>
             </div>
 
         </div>
 
         <div class="proof-note">
-            <p>Esses números refletem <strong>dados médios do setor de saúde digital</strong> e clínicas que implementaram automação de processos. Seus resultados podem variar dependendo do volume de consultas, especialidade e configuração.</p>
-            <p style="margin-top:0.8rem">Quer saber o que esperar especificamente para a sua clínica? <strong>Faça o diagnóstico gratuito.</strong></p>
+            <p>Esses números refletem <strong>dados médios de empresas que implementaram agentes de IA</strong> em seus processos. Seus resultados podem variar dependendo do setor, volume operacional e configuração.</p>
+            <p style="margin-top:0.8rem">Quer saber o que esperar especificamente para o seu negócio? <strong>Faça o diagnóstico gratuito.</strong></p>
             <div class="proof-cta">
                 <button class="nv-liquid-btn" onclick="openDiagnosticModal()">
                     <div class="nv-liquid-distort"></div>
-                    <span class="nv-liquid-text">Ver o potencial da minha clínica →</span>
+                    <span class="nv-liquid-text">Ver o potencial do meu negócio →</span>
                 </button>
             </div>
         </div>
@@ -1345,15 +1362,15 @@
     <div class="diagnosis-section" id="diagnostico">
         <div class="diagnosis-inner">
             <div class="section-badge" style="display:inline-block;margin-bottom:1.5rem;">🎯 Diagnóstico Gratuito</div>
-            <h2>Descubra qual automação vai<br><span class="gradient-text">transformar sua clínica</span></h2>
-            <p>Preencha o formulário abaixo. Nossa equipe entra em contato em até 24 horas para entender sua realidade e indicar a melhor solução — sem compromisso.</p>
+            <h2>Descubra quais agentes vão<br><span class="gradient-text">transformar seu negócio</span></h2>
+            <p>Preencha o formulário abaixo. Nossa equipe entra em contato em até 24 horas para entender sua realidade e indicar os agentes mais indicados para o seu caso — sem compromisso.</p>
 
             <div class="diagnosis-form" id="diagnosisFormWrapper">
                 <form id="diagnosisForm">
                     <div class="form-row">
                         <div class="form-group">
                             <label for="dName">Seu nome *</label>
-                            <input type="text" id="dName" placeholder="Dr(a). João Silva" required>
+                            <input type="text" id="dName" placeholder="João Silva" required>
                         </div>
                         <div class="form-group">
                             <label for="dWhatsApp">WhatsApp *</label>
@@ -1363,49 +1380,49 @@
                     <div class="form-row">
                         <div class="form-group">
                             <label for="dEmail">E-mail</label>
-                            <input type="email" id="dEmail" placeholder="contato@suaclinica.com.br">
+                            <input type="email" id="dEmail" placeholder="contato@suaempresa.com.br">
                         </div>
                         <div class="form-group">
-                            <label for="dClinica">Nome da clínica *</label>
-                            <input type="text" id="dClinica" placeholder="Clínica São Lucas" required>
+                            <label for="dClinica">Nome da empresa *</label>
+                            <input type="text" id="dClinica" placeholder="Empresa Ltda." required>
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="form-group">
-                            <label for="dEspecialidade">Especialidade</label>
+                            <label for="dEspecialidade">Setor</label>
                             <select id="dEspecialidade">
                                 <option value="">Selecione...</option>
-                                <option>Clínica Geral</option>
-                                <option>Dermatologia</option>
-                                <option>Ortopedia</option>
-                                <option>Odontologia</option>
-                                <option>Psicologia / Psiquiatria</option>
-                                <option>Ginecologia / Obstetrícia</option>
-                                <option>Pediatria</option>
-                                <option>Cardiologia</option>
-                                <option>Fisioterapia</option>
-                                <option>Nutrição</option>
-                                <option>Multidisciplinar</option>
-                                <option>Outra</option>
+                                <option>Saúde</option>
+                                <option>Varejo / E-commerce</option>
+                                <option>Serviços</option>
+                                <option>Logística</option>
+                                <option>Educação</option>
+                                <option>Financeiro / Contábil</option>
+                                <option>Tecnologia</option>
+                                <option>Indústria</option>
+                                <option>Imobiliário</option>
+                                <option>Alimentação / Restaurantes</option>
+                                <option>Outro</option>
                             </select>
                         </div>
                         <div class="form-group">
-                            <label for="dDor">Principal problema hoje *</label>
+                            <label for="dDor">Principal gargalo hoje *</label>
                             <select id="dDor" required>
                                 <option value="">Selecione...</option>
-                                <option>Muitas faltas / no-shows</option>
-                                <option>Agendamento manual no WhatsApp</option>
-                                <option>Falta de follow-up pós-consulta</option>
-                                <option>Cobranças não automatizadas</option>
-                                <option>Poucas avaliações no Google</option>
-                                <option>Falta de visibilidade de métricas</option>
+                                <option>Processos repetitivos manuais</option>
+                                <option>Falta de dados em tempo real</option>
+                                <option>Atendimento ao cliente sobrecarregado</option>
+                                <option>Gestão financeira descentralizada</option>
+                                <option>Gestão de RH e equipe</option>
+                                <option>Marketing e captação de leads</option>
+                                <option>Integração entre sistemas</option>
                                 <option>Outro</option>
                             </select>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="dObs">Conte um pouco mais sobre sua clínica (opcional)</label>
-                        <textarea id="dObs" placeholder="Quantos médicos, volume mensal de consultas, sistema que já usa..."></textarea>
+                        <label for="dObs">Conte um pouco mais sobre sua empresa (opcional)</label>
+                        <textarea id="dObs" placeholder="Quantos colaboradores, principais desafios, sistemas que já usa..."></textarea>
                     </div>
                     <button type="button" class="form-submit" onclick="submitDiagnosis()">
                         Quero meu Diagnóstico Gratuito →
@@ -1414,7 +1431,7 @@
                 <div class="form-success" id="diagnosisSuccess">
                     <div class="success-icon">🎉</div>
                     <h3>Diagnóstico recebido!</h3>
-                    <p>Nossa equipe vai analisar o perfil da sua clínica e entrar em contato via WhatsApp em até 24 horas com a melhor indicação para o seu caso.</p>
+                    <p>Nossa equipe vai analisar o perfil da sua empresa e entrar em contato via WhatsApp em até 24 horas com os agentes mais indicados para o seu caso.</p>
                 </div>
             </div>
         </div>
@@ -1423,8 +1440,15 @@
     <!-- FOOTER -->
     <footer>
         <div class="footer-inner">
-            <div class="footer-logo">Novera Digital</div>
-            <div class="footer-text">© 2025 Novera Digital · Automações para Clínicas de Saúde</div>
+            <div class="footer-logo" style="display:flex;align-items:center;gap:8px;">
+                <svg width="26" height="26" viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="34" height="34" rx="7" fill="#001233"/>
+                    <path d="M8 26V8L17 21.5V8L26 26" stroke="white" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <ellipse cx="17" cy="17" rx="2.5" ry="2.5" fill="#00c4ff" opacity="0.9"/>
+                </svg>
+                <span>Novera OS</span>
+            </div>
+            <div class="footer-text">© 2025 Novera OS · Gestão Autônoma com Agentes de IA</div>
             <button class="footer-admin-btn" onclick="openLoginModal()">Acesso Restrito</button>
         </div>
     </footer>
@@ -1433,25 +1457,25 @@
     <div class="modal-overlay" id="diagnosticModal">
         <div class="modal-box">
             <button class="modal-close" onclick="closeDiagnosticModal()">✕</button>
-            <h3>Automação Personalizada</h3>
+            <h3>Solução Personalizada</h3>
             <p class="modal-sub">Preencha abaixo e nossa equipe entra em contato em até 24h para um diagnóstico completo e gratuito do seu processo atual.</p>
             <div id="modalFormWrapper">
                 <form id="modalForm">
                     <div class="form-group">
                         <label>Nome *</label>
-                        <input type="text" id="mName" placeholder="Dr(a). Nome Sobrenome" required>
+                        <input type="text" id="mName" placeholder="Nome Sobrenome" required>
                     </div>
                     <div class="form-group">
                         <label>WhatsApp *</label>
                         <input type="tel" id="mWhatsApp" placeholder="(11) 99999-9999" required>
                     </div>
                     <div class="form-group">
-                        <label>Clínica</label>
-                        <input type="text" id="mClinica" placeholder="Nome da sua clínica">
+                        <label>Empresa</label>
+                        <input type="text" id="mClinica" placeholder="Nome da sua empresa">
                     </div>
                     <div class="form-group">
                         <label>O que você precisa automatizar?</label>
-                        <textarea id="mNeeds" placeholder="Descreva seu processo atual e o que você gostaria de automatizar..." style="min-height:90px"></textarea>
+                        <textarea id="mNeeds" placeholder="Descreva os processos da sua empresa e o que você gostaria de automatizar..." style="min-height:90px"></textarea>
                     </div>
                     <button type="button" class="form-submit" onclick="submitModalForm()">Solicitar Diagnóstico Gratuito</button>
                 </form>
@@ -1490,7 +1514,7 @@
             <!-- Header -->
             <div class="admin-header">
                 <div class="admin-header-left">
-                    <h2>📊 Painel — Novera Clínicas</h2>
+                    <h2>📊 Painel — Novera OS</h2>
                     <div class="admin-fb-status" id="adminFbStatus">
                         <div class="admin-fb-dot" id="adminFbDot"></div>
                         <span id="adminFbLabel">verificando...</span>
@@ -1534,7 +1558,7 @@
 
             <!-- Toolbar -->
             <div class="admin-toolbar">
-                <input class="admin-search" type="text" id="adminSearch" placeholder="🔍  nome, WhatsApp, clínica, e-mail..." oninput="applyFilters()">
+                <input class="admin-search" type="text" id="adminSearch" placeholder="🔍  nome, WhatsApp, empresa, e-mail..." oninput="applyFilters()">
                 <div class="admin-filter-group">
                     <button class="admin-period-btn active" data-period="all"   onclick="setPeriod(this)">Todos</button>
                     <button class="admin-period-btn"        data-period="today" onclick="setPeriod(this)">Hoje</button>
@@ -1607,7 +1631,7 @@
                     const dx = p1.x - p2.x, dy = p1.y - p2.y;
                     const dist = Math.sqrt(dx*dx + dy*dy);
                     if (dist < 150) {
-                        ctx.strokeStyle = `rgba(59,130,246,${0.1*(1-dist/150)})`;
+                        ctx.strokeStyle = `rgba(30,111,255,${0.1*(1-dist/150)})`;
                         ctx.lineWidth = 0.5;
                         ctx.beginPath();
                         ctx.moveTo(p1.x, p1.y);
@@ -1820,7 +1844,7 @@
         let activePeriod = 'all';
 
         const STATUS_META = {
-            novo:        { label: '🔵 Novo',        color: '#3b82f6' },
+            novo:        { label: '🔵 Novo',        color: '#1e6fff' },
             contatado:   { label: '🟡 Contatado',   color: '#f59e0b' },
             negociando:  { label: '🟠 Negociando',  color: '#f97316' },
             fechado:     { label: '🟢 Fechado',     color: '#10b981' },
@@ -1936,11 +1960,11 @@
                 const x    = 10 + i * gap;
                 const y    = H - barH - 16;
                 const isToday = d.date.toDateString() === new Date().toDateString();
-                const fill = isToday ? 'url(#barGrad)' : 'rgba(59,130,246,0.3)';
+                const fill = isToday ? 'url(#barGrad)' : 'rgba(30,111,255,0.3)';
                 return `
                     <defs><linearGradient id="barGrad" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="0%" stop-color="#3b82f6"/>
-                        <stop offset="100%" stop-color="#a855f7"/>
+                        <stop offset="0%" stop-color="#1e6fff"/>
+                        <stop offset="100%" stop-color="#00c4ff"/>
                     </linearGradient></defs>
                     <rect x="${x}" y="${y}" width="${barW}" height="${barH}" rx="4" fill="${fill}"/>
                     ${d.count > 0 ? `<text x="${x+barW/2}" y="${y-4}" text-anchor="middle" fill="rgba(255,255,255,0.5)" font-size="10">${d.count}</text>` : ''}
@@ -1985,8 +2009,8 @@
                         &nbsp;·&nbsp; 🕐 ${new Date(l.timestamp).toLocaleString('pt-BR')}
                     </div>
                     <div class="lead-detail">
-                        ${l.clinica      ? `<strong>Clínica:</strong> ${escHtml(l.clinica)} &nbsp;` : ''}
-                        ${l.especialidade? `· <strong>Especialidade:</strong> ${escHtml(l.especialidade)} ` : ''}
+                        ${l.clinica      ? `<strong>Empresa:</strong> ${escHtml(l.clinica)} &nbsp;` : ''}
+                        ${l.especialidade? `· <strong>Setor:</strong> ${escHtml(l.especialidade)} ` : ''}
                         ${l.dor         ? `<br><strong>Problema:</strong> ${escHtml(l.dor)}` : ''}
                         ${l.needs       ? `<br><strong>Necessidade:</strong> ${escHtml(l.needs)}` : ''}
                         ${l.obs         ? `<br><strong>Obs:</strong> ${escHtml(l.obs)}` : ''}
@@ -2122,3 +2146,5 @@
     </script>
 </body>
 </html>
+
+
